@@ -1,10 +1,11 @@
 
-from rlcard.games.uno.utils import init_deck
+from uno.game.uno.utils import init_deck
 
 
 class UnoDealer:
     ''' Initialize a uno dealer class
     '''
+
     def __init__(self, np_random):
         self.np_random = np_random
         self.deck = init_deck()

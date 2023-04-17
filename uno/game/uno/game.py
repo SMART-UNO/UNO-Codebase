@@ -1,9 +1,9 @@
 from copy import deepcopy
 import numpy as np
 
-from rlcard.games.uno import Dealer
-from rlcard.games.uno import Player
-from rlcard.games.uno import Round
+from uno.game.uno import Dealer
+from uno.game.uno import Player
+from uno.game.uno import Round
 
 
 class UnoGame:
@@ -35,7 +35,8 @@ class UnoGame:
         self.dealer = Dealer(self.np_random)
 
         # Initialize four players to play the game
-        self.players = [Player(i, self.np_random) for i in range(self.num_players)]
+        self.players = [Player(i, self.np_random)
+                        for i in range(self.num_players)]
 
         # Deal 7 cards to each player to prepare for the game
         for player in self.players:

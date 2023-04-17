@@ -2,19 +2,17 @@ import os
 import json
 import numpy as np
 from collections import OrderedDict
+import uno
+from uno.game.uno.card import UnoCard as Card
 
-import rlcard
-
-from rlcard.games.uno.card import UnoCard as Card
-
-# Read required docs
-ROOT_PATH = rlcard.__path__[0]
+# REFACTORED
+ROOT_PATH = uno.__path__[0]
 
 # a map of abstract action to its index and a list of abstract action
-with open(os.path.join(ROOT_PATH, 'games/uno/jsondata/action_space.json'), 'r') as file:
+with open(os.path.join(ROOT_PATH, 'game/uno/jsondata/action_space.json'), 'r') as file:
     ACTION_SPACE = json.load(file, object_pairs_hook=OrderedDict)
     ACTION_LIST = list(ACTION_SPACE.keys())
-
+print(ACTION_LIST)
 # a map of color to its index
 COLOR_MAP = {'r': 0, 'g': 1, 'b': 2, 'y': 3}
 
@@ -25,7 +23,8 @@ TRAIT_MAP = {'0': 0, '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7,
 
 WILD = ['r-wild', 'g-wild', 'b-wild', 'y-wild']
 
-WILD_DRAW_4 = ['r-wild_draw_4', 'g-wild_draw_4', 'b-wild_draw_4', 'y-wild_draw_4']
+WILD_DRAW_4 = ['r-wild_draw_4', 'g-wild_draw_4',
+               'b-wild_draw_4', 'y-wild_draw_4']
 
 
 def init_deck():
@@ -66,6 +65,7 @@ def cards2list(cards):
         cards_list.append(card.get_str())
     return cards_list
 
+
 def hand2dict(hand):
     ''' Get the corresponding dict representation of hand
 
@@ -82,6 +82,7 @@ def hand2dict(hand):
         else:
             hand_dict[card] += 1
     return hand_dict
+
 
 def encode_hand(plane, hand):
     ''' Encode hand and represerve it into plane
@@ -109,6 +110,7 @@ def encode_hand(plane, hand):
             plane[0][color][trait] = 0
             plane[count][color][trait] = 1
     return plane
+
 
 def encode_target(plane, target):
     ''' Encode target and represerve it into plane

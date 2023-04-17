@@ -1,5 +1,5 @@
-from rlcard.games.uno.card import UnoCard
-from rlcard.games.uno.utils import cards2list, WILD, WILD_DRAW_4
+from uno.game.uno.card import UnoCard
+from uno.game.uno.utils import cards2list, WILD, WILD_DRAW_4
 
 
 class UnoRound:
@@ -70,7 +70,7 @@ class UnoRound:
         if trait == 'wild' or trait == 'wild_draw_4':
             for index, card in enumerate(player.hand):
                 if trait == card.trait:
-                    card.color = color # update the color of wild card to match the action
+                    card.color = color  # update the color of wild card to match the action
                     remove_index = index
                     break
         else:
@@ -86,7 +86,8 @@ class UnoRound:
 
         # perform the number action
         if card.type == 'number':
-            self.current_player = (self.current_player + self.direction) % self.num_players
+            self.current_player = (
+                self.current_player + self.direction) % self.num_players
             self.target = card
 
         # perform non-number action
@@ -165,7 +166,7 @@ class UnoRound:
             self.replace_deck()
             #self.is_over = True
             #self.winner = UnoJudger.judge_winner(players)
-            #return None
+            # return None
 
         card = self.dealer.deck.pop()
 
@@ -174,14 +175,16 @@ class UnoRound:
             card.color = self.np_random.choice(UnoCard.info['color'])
             self.target = card
             self.played_cards.append(card)
-            self.current_player = (self.current_player + self.direction) % self.num_players
+            self.current_player = (
+                self.current_player + self.direction) % self.num_players
 
         # draw a card with the same color of target
         elif card.color == self.target.color:
             if card.type == 'number':
                 self.target = card
                 self.played_cards.append(card)
-                self.current_player = (self.current_player + self.direction) % self.num_players
+                self.current_player = (
+                    self.current_player + self.direction) % self.num_players
             else:
                 self.played_cards.append(card)
                 self._preform_non_number_action(players, card)
@@ -189,7 +192,8 @@ class UnoRound:
         # draw a card with the diffrent color of target
         else:
             players[self.current_player].hand.append(card)
-            self.current_player = (self.current_player + self.direction) % self.num_players
+            self.current_player = (
+                self.current_player + self.direction) % self.num_players
 
     def _preform_non_number_action(self, players, card):
         current = self.current_player
@@ -210,8 +214,9 @@ class UnoRound:
                 self.replace_deck()
                 #self.is_over = True
                 #self.winner = UnoJudger.judge_winner(players)
-                #return None
-            self.dealer.deal_cards(players[(current + direction) % num_players], 2)
+                # return None
+            self.dealer.deal_cards(
+                players[(current + direction) % num_players], 2)
             current = (current + direction) % num_players
 
         # perfrom wild_draw_4 card
@@ -220,8 +225,9 @@ class UnoRound:
                 self.replace_deck()
                 #self.is_over = True
                 #self.winner = UnoJudger.judge_winner(players)
-                #return None
-            self.dealer.deal_cards(players[(current + direction) % num_players], 4)
+                # return None
+            self.dealer.deal_cards(
+                players[(current + direction) % num_players], 4)
             current = (current + direction) % num_players
         self.current_player = (current + self.direction) % num_players
         self.target = card

@@ -1,4 +1,5 @@
 from uno.utils import *
+from icecream import ic
 
 
 class Env(object):
@@ -26,7 +27,7 @@ class Env(object):
                 'rlcard/envs/blackjack.py'
                 TODO: Support more game configurations in the future.
         '''
-        self.allow_step_back = self.game.allow_step_back = config['allow_step_back']
+        self.allow_step_back = self.game.allow_step_back
         self.action_recorder = []
 
         # Game specific configurations
@@ -49,7 +50,7 @@ class Env(object):
         self.timestep = 0
 
         # Set random seed, default is None
-        self.seed(config['seed'])
+        self.seed(2023)
 
     def reset(self):
         ''' Start a new game
@@ -144,6 +145,8 @@ class Env(object):
         while not self.is_over():
             # Agent plays
             if not is_training:
+                # ic(player_id)
+                # ic(state)
                 action, _ = self.agents[player_id].eval_step(state)
             else:
                 action = self.agents[player_id].step(state)

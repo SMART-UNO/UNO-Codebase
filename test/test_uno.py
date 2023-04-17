@@ -20,3 +20,4 @@ print(env.action_shape)  # [None]
 
 trajectories, payoffs = env.run()
 ic(trajectories)
+ic(payoffs)

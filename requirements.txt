@@ -1,0 +1,9 @@
+# Add version later
+torch
+numpy
+matplotlib
+pandas
+# Xiaoyang personal preferences
+yaml
+icecream
+colored

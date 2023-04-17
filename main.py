@@ -1,10 +1,9 @@
 import torch
 import numpy as np
 from icecream import ic
-import rlcard
-from rlcard.agents import RandomAgent
-from rlcard import *
-from rlcard.envs.uno import UnoEnv
+from uno.envs.env import UnoEnv
+from uno.agents.random_agent import RandomAgent
+
 DEFAULT_GAME_CONFIG = {
     'game_num_players': 2,
 }

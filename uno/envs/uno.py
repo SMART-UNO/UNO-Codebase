@@ -1,6 +1,8 @@
 import numpy as np
 from collections import OrderedDict
 
+
+# LOCAL IMPORT
 from uno.envs.env import Env
 from uno.game.uno import Game
 from uno.game.uno.utils import encode_hand, encode_target
@@ -10,6 +12,7 @@ from uno.game.uno.utils import cards2list
 DEFAULT_GAME_CONFIG = {
     'game_num_players': 2,
 }
+# TODO: (Xiaoyang): Refactor this class later...
 
 
 class UnoEnv(Env):
@@ -42,8 +45,6 @@ class UnoEnv(Env):
         legal_ids = self._get_legal_actions()
         if action_id in legal_ids:
             return ACTION_LIST[action_id]
-        # if (len(self.game.dealer.deck) + len(self.game.round.played_cards)) > 17:
-        #    return ACTION_LIST[60]
         return ACTION_LIST[np.random.choice(legal_ids)]
 
     def _get_legal_actions(self):

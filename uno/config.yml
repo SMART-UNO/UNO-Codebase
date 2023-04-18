@@ -1,0 +1,5 @@
+# TODO:(Xiaoyang) edit this file for configuration
+---
+DEFAULT_GAME_CONFIG:
+  game_num_players: 2
+  seed: 2023

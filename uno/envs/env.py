@@ -2,6 +2,7 @@ from uno.utils import *
 from icecream import ic
 
 
+# THIS CLASS HAS ALREADY BEEN MODIFIED!
 class Env(object):
     '''
     The base Env class. For all the environments in RLCard,
@@ -35,6 +36,8 @@ class Env(object):
         # TODO support game configurations for all the games
         supported_envs = ['blackjack', 'leduc-holdem',
                           'limit-holdem', 'no-limit-holdem']
+
+        # TODO: (Xiaoyang): these functions are deprecated. REMOVE later...
         if self.name in supported_envs:
             _game_config = self.default_game_config.copy()
             for key in config:
@@ -49,7 +52,7 @@ class Env(object):
         # A counter for the timesteps
         self.timestep = 0
 
-        # Set random seed, default is None
+        # TODO: (Xiaoyang) set seed before initialization
         self.seed(2023)
 
     def reset(self):

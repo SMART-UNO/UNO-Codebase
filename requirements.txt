@@ -5,5 +5,7 @@ matplotlib
 pandas
 # Xiaoyang personal preferences
 yaml
+yamlpath
+tqdm
 icecream
 colored

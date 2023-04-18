@@ -12,7 +12,7 @@ ROOT_PATH = uno.__path__[0]
 with open(os.path.join(ROOT_PATH, 'game/uno/jsondata/action_space.json'), 'r') as file:
     ACTION_SPACE = json.load(file, object_pairs_hook=OrderedDict)
     ACTION_LIST = list(ACTION_SPACE.keys())
-print(ACTION_LIST)
+# print(ACTION_LIST)
 # a map of color to its index
 COLOR_MAP = {'r': 0, 'g': 1, 'b': 2, 'y': 3}
 

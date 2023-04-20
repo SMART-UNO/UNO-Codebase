@@ -1,27 +1,24 @@
 import numpy as np
+from icecream import ic
 
 
 class RandomAgent(object):
-    ''' A random agent. Random agents is for running toy examples on the card games
-    '''
 
-    def __init__(self, num_actions):
-        ''' Initilize the random agent
-        Args:
-            num_actions (int): The size of the ouput action space
-        '''
+    def __init__(self, num_actions, mode=None):
+        # assert mode in ['random', 'color-first', 'value-first']
+        # self.mode = mode
         self.use_raw = False
         self.num_actions = num_actions
 
-    @staticmethod
-    def step(state):
-        ''' Predict the action given the curent state in gerenerating training data.
-        Args:
-            state (dict): An dictionary that represents the current state
-        Returns:
-            action (int): The action predicted (randomly chosen) by the random agent
-        '''
-        return np.random.choice(list(state['legal_actions'].keys()))
+    def step(self, state):
+        legal_actions = list(state['legal_actions'].keys())
+        # TODO: (Xiaoyang) add other random agents later
+        # ic(state['legal_actions'])
+        # ic(legal_actions)
+        # if self.mode == 'random':
+        #     return np.random.choice(legal_actions)
+        # else:
+        return np.random.choice(legal_actions)
 
     def eval_step(self, state):
         ''' Predict the action given the current state for evaluation.

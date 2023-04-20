@@ -14,8 +14,9 @@ np.random.seed(2023)
 
 # INITIALIZE environments (already overwritten)
 env = UnoEnv(False)
+env.set_agents([RandomAgent(num_actions=61),
+               RandomAgent(num_actions=61)])
 # For testing, just two random agents
-env.set_agents([RandomAgent(num_actions=61), RandomAgent(num_actions=61)])
 trajectories, payoffs = env.run()
 ic(len(trajectories))
 ic(payoffs)

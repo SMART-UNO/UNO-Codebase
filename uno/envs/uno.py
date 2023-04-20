@@ -1,6 +1,6 @@
 import numpy as np
 from collections import OrderedDict
-
+from icecream import ic
 
 # LOCAL IMPORT
 from uno.envs.env import Env
@@ -48,7 +48,8 @@ class UnoEnv(Env):
         return ACTION_LIST[np.random.choice(legal_ids)]
 
     def _get_legal_actions(self):
-        legal_actions = self.game.get_legal_actions()
+        legal_actions, target = self.game.get_legal_actions()
+        ic(target.str)
         legal_ids = {ACTION_SPACE[action]: None for action in legal_actions}
         return OrderedDict(legal_ids)
 
@@ -65,6 +66,6 @@ class UnoEnv(Env):
         state['played_cards'] = cards2list(self.game.round.played_cards)
         state['target'] = self.game.round.target.str
         state['current_player'] = self.game.round.current_player
-        state['legal_actions'] = self.game.round.get_legal_actions(
+        state['legal_actions'], _ = self.game.round.get_legal_actions(
             self.game.players, state['current_player'])
         return state

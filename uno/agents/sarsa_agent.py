@@ -31,7 +31,7 @@ class SARSAAgent(object):
 
     def step(self, state):
         # Obtain legal actions
-        ic(state['obs'].shape)
+        # ic(state['obs'].shape)
         legal_actions = list(state['legal_actions'].keys())
         # Obtain action values by approximation
         val_lst = self.Q(state['obs'])[legal_actions]
@@ -47,15 +47,18 @@ class SARSAAgent(object):
 
     def eval_step(self, state):
         # Return optimal policy based on LEARNED policy
-        probs = [0 for _ in range(self.num_actions)]
-        for i in state['legal_actions']:
-            probs[i] = 1/len(state['legal_actions'])
-
-        info = {}
-        info['probs'] = {state['raw_legal_actions'][i]: probs[list(
-            state['legal_actions'].keys())[i]] for i in range(len(state['legal_actions']))}
-
-        return self.step(state), info
+        legal_actions = list(state['legal_actions'].keys())
+        # Obtain action values by approximation
+        val_lst = self.Q(state['obs'])[legal_actions]
+        assert len(legal_actions) == len(val_lst)
+        # Action
+        rand_val = np.random.rand()
+        assert rand_val >= 0 and rand_val <= 1
+        if rand_val < self.eps:
+            return self.random_action(legal_actions), None
+        else:
+            # ic(torch.argmax(val_lst).item())
+            return legal_actions[torch.argmax(val_lst).item()], None
 
     def update(self, S, A, S_NEW, R, is_over):
         q_est = self.Q(S['obs'])[A]

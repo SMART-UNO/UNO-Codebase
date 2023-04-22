@@ -43,7 +43,7 @@ class UnoEnv2P():
     def base_move(self):
         while self.cur_player == 0 and not self.game.is_over():
             base_action = self.base_agent.step(self.cur_state)
-            ic(base_action)
+            # ic(base_action)
             if not self.base_agent.use_raw:
                 base_action = self._decode_action(base_action)
             _, self.cur_player = self.game.step(base_action)
@@ -54,6 +54,7 @@ class UnoEnv2P():
         # Start accessing actions
         assert self.cur_player == 1
         # Perform one-step update
+        # ic(action)
         if not self.training_agent.use_raw:
             action = self._decode_action(action)
         # Record the action for human agent

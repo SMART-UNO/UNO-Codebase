@@ -22,6 +22,7 @@ class SARSAAgent(object):
             self.opt, 5, gamma=0.1)
         # Hyperparameters
         self.eps = eps
+        self.df = 1
 
     @staticmethod
     def random_action(legal_actions):
@@ -56,9 +57,23 @@ class SARSAAgent(object):
 
         return self.step(state), info
 
+    def update(self, S, A, S_NEW, R, is_over):
+        q_est = self.Q(S['obs'])[A]
+        A_NEW = self.step(S_NEW)
+        next_q = self.Q(S_NEW['obs'])[A_NEW]
 
-# Simple Test Code
+        q_true = self.df*next_q + R if not is_over else R
 
+        loss = (q_true - q_est)**2  # MSE
+
+        self.opt.zero_grad()
+        loss.backward()
+        self.opt.step()
+
+        return A_NEW
+
+
+        # Simple Test Code
 if __name__ == '__main__':
     # Test sarsa agent
     sarsa = SARSAAgent(61)

@@ -32,8 +32,16 @@ class UnoEnv2P():
         self.cur_state = self.get_state(self.cur_player)
         self.base_move()
 
+    def reset(self):
+        self.game = Game()
+        self.action_recorder = []  # only record the action of training_agent
+        # Initialization
+        _, self.cur_player = self.game.init_game()
+        self.cur_state = self.get_state(self.cur_player)
+        self.base_move()
+
     def base_move(self):
-        while self.cur_player == 0:
+        while self.cur_player == 0 and not self.game.is_over():
             base_action = self.base_agent.step(self.cur_state)
             ic(base_action)
             if not self.base_agent.use_raw:
@@ -52,11 +60,13 @@ class UnoEnv2P():
         self.action_recorder.append(("Training", action))
         _, self.cur_player = self.game.step(action)
         self.cur_state = self.get_state(self.cur_player)
+
+        # Update current player
         if self.cur_player == 1:
-            return self.cur_state
+            return self.cur_state, self.game.is_over()
         else:
             self.base_move()
-            return self.cur_state
+            return self.cur_state, self.game.is_over()
 
     def get_state(self, id):
         return self._extract_state(self.game.get_state(id))

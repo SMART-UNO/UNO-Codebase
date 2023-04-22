@@ -3,7 +3,7 @@ import numpy as np
 from icecream import ic
 from tqdm import tqdm
 
-from uno.envs.uno import UnoEnv
+from uno.envs.unoenv import UnoEnv
 from scipy.stats import uniform
 
 from torch import nn

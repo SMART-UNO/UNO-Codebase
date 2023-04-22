@@ -6,7 +6,7 @@ import pickle
 import json
 
 # All of imports here are CUSTOMIZED. We are not using RLCards anymore.
-from uno.envs.uno import UnoEnv
+from uno.envs.unoenv import UnoEnv
 from uno.agents.random_agent import RandomAgent
 from uno.agents.sarsa_agent import SARSAAgent
 from utils import parse_payoffs

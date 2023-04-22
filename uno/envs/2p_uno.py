@@ -9,19 +9,24 @@ from uno.game.uno.utils import encode_hand, encode_target
 from uno.game.uno.utils import ACTION_SPACE, ACTION_LIST
 from uno.game.uno.utils import cards2list
 
-DEFAULT_GAME_CONFIG = {
-    'game_num_players': 2,
-}
 
-class UnoEnv2P(Env):
-    
-    def __init__(self, config):
-        self.name = 'uno'
-        self.default_game_config = DEFAULT_GAME_CONFIG
+class UnoEnv2P():
+
+    def __init__(self):
+        self.name = 'uno-2p'
         self.game = Game()
-        super().__init__(config)
-        self.state_shape = [[4, 4, 15] for _ in range(self.num_players)]
-        self.action_shape = [None for _ in range(self.num_players)]
+        self.game.init_game()
+        # Useful parameters
+        self.action_recorder = []
+        self.base_agent_id, self.smart_agent_id = 0, 1
+        self.states = [[4, 4, 15] for _ in range(2)]
+        self.actions = [None for _ in range(2)]
+
+    def step(self, action):
+        pass
+
+    def get_state(self, id):
+        return self._extract_state(self.game.get_state(id))
 
     def _extract_state(self, state):
         obs = np.zeros((4, 4, 15), dtype=int)
@@ -51,6 +56,9 @@ class UnoEnv2P(Env):
         legal_ids = {ACTION_SPACE[action]: None for action in legal_actions}
         return OrderedDict(legal_ids)
 
+    def is_over(self):
+        return self.game.is_over()
+
     def get_perfect_information(self):
         ''' Get the perfect information of the current state
 
@@ -67,3 +75,6 @@ class UnoEnv2P(Env):
         state['legal_actions'], _ = self.game.round.get_legal_actions(
             self.game.players, state['current_player'])
         return state
+
+
+unoenv = UnoEnv2P()

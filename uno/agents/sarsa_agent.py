@@ -1,26 +1,39 @@
+# AUTHOR: Xiaoyang Song
 import numpy as np
 import torch
 import torch.nn as nn
 from icecream import ic
+# External import
+from model.sarsa_backbone import SARSA_Q
 
 
-# TODO:(Xiaoyang) REFACTOR THIS CLASS SOON...
-# Note: if any of you want to modify this one, please lmk first.
 class SARSAAgent(object):
 
-    def __init__(self, num_actions):
+    def __init__(self, num_actions, lr=1e-3, eps=0.05):
         self.use_raw = False
         self.num_actions = num_actions
-        # Q-Value estimation network: currently the architecture is borrowed from Stanford report
-        self.Q = nn.Sequential(
-            nn.Flatten(),
-            nn.Linear(4 * 4 * 15, 512),
-            nn.ReLU(),
-            nn.Linear(512, 61)
-        )
+        # Q-Value estimation network
+        self.Q = SARSA_Q(512, 61)
+        # Optimizer
+        self.opt = torch.optim.Adam(self.Q.parameters(), lr=lr)
+        # Scheduler (unnecessary for now)
+        self.scheduler = torch.optim.lr_scheduler.StepLR(
+            self.opt, 5, gamma=0.1)
+        # Hyperparameters
+        self.eps = eps
+
+    @staticmethod
+    def random_action(legal_actions):
+        # This is used for eps-greedy exploration
+        return np.random.choice(legal_actions)
 
     def step(self, state):
+        # Obtain legal actions
+        ic(state['obs'].shape)
         legal_actions = list(state['legal_actions'].keys())
+        # Obtain action values by approximation
+        val_lst = self.Q(state['obs'])[legal_actions]
+        ic(val_lst)
         return np.random.choice(legal_actions)
 
     def eval_step(self, state):
@@ -39,8 +52,11 @@ class SARSAAgent(object):
 # Simple Test Code
 
 if __name__ == '__main__':
+    # Test sarsa agent
     sarsa = SARSAAgent(61)
     state = torch.zeros((4, 4, 15))
     # Test nn
+    ic(state.shape)
     out = sarsa.Q(state)
     ic(out.shape)
+    ic(torch.sum(out))

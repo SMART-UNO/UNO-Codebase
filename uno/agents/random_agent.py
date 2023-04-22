@@ -1,6 +1,9 @@
 import numpy as np
 from icecream import ic
 
+# TODO:(Xiaoyang) REFACTOR THIS CLASS SOON...
+# Note: if any of you want to modify this one, please lmk first.
+
 
 class RandomAgent(object):
 

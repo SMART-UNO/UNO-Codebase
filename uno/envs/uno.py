@@ -49,7 +49,7 @@ class UnoEnv(Env):
 
     def _get_legal_actions(self):
         legal_actions, target = self.game.get_legal_actions()
-        ic(target.str)
+        # ic(target.str)
         legal_ids = {ACTION_SPACE[action]: None for action in legal_actions}
         return OrderedDict(legal_ids)
 

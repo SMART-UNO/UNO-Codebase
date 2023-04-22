@@ -8,14 +8,15 @@ import json
 # All of imports here are CUSTOMIZED. We are not using RLCards anymore.
 from uno.envs.uno import UnoEnv
 from uno.agents.random_agent import RandomAgent
+from uno.agents.sarsa_agent import SARSAAgent
 from utils import parse_payoffs
 
 np.random.seed(2023)
 
 # INITIALIZE environments (already overwritten)
-env = UnoEnv(False)
+env = UnoEnv(True)
 env.set_agents([RandomAgent(num_actions=61),
-               RandomAgent(num_actions=61)])
+               SARSAAgent(num_actions=61)])
 # For testing, just two random agents
 trajectories, payoffs = env.run()
 ic(len(trajectories))

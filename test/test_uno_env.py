@@ -17,8 +17,12 @@ np.random.seed(2023)
 env = UnoEnv(True)
 env.set_agents([RandomAgent(num_actions=61),
                SARSAAgent(num_actions=61)])
+# Test step by step
+# state = env.step(qw)
+
 # For testing, just two random agents
 trajectories, payoffs = env.run()
+ic(env.is_over())
 ic(len(trajectories))
 ic(payoffs)
 
@@ -76,4 +80,4 @@ def test_random_player(n=100):
 # P1 wins 4881 games (P1 win rate: 48.81%)
 # Draws 0 games (Draw rate: 0.0%)
 
-test_random_player(10000)
+# test_random_player(10000)

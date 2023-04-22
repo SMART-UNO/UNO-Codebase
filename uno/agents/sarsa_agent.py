@@ -4,6 +4,7 @@ import torch
 import torch.nn as nn
 from icecream import ic
 # External import
+from uno.envs.uno2penv import UnoEnv2P
 from model.sarsa_backbone import SARSA_Q
 
 
@@ -33,6 +34,7 @@ class SARSAAgent(object):
         legal_actions = list(state['legal_actions'].keys())
         # Obtain action values by approximation
         val_lst = self.Q(state['obs'])[legal_actions]
+        assert len(legal_actions) == len(val_lst)
         # Action
         rand_val = np.random.rand()
         assert rand_val >= 0 and rand_val <= 1
@@ -62,7 +64,14 @@ if __name__ == '__main__':
     sarsa = SARSAAgent(61)
     state = torch.zeros((4, 4, 15))
     # Test nn
-    ic(state.shape)
+    # ic(state.shape)
     out = sarsa.Q(state)
-    ic(out.shape)
-    ic(torch.sum(out))
+    # ic(out.shape)
+    # ic(torch.sum(out))
+    # Test UNO2PENV
+    unoenv = UnoEnv2P(sarsa, sarsa)
+    state = unoenv.get_state(1)
+    ic(state)
+    action = sarsa.step(state)
+    ic(action)
+    unoenv.step(action)

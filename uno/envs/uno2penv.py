@@ -10,20 +10,53 @@ from uno.game.uno.utils import ACTION_SPACE, ACTION_LIST
 from uno.game.uno.utils import cards2list
 
 
+BASE_ID = 0
+TRAIN_ID = 1
+
+
 class UnoEnv2P():
 
-    def __init__(self):
+    def __init__(self, base_agent, training_agent):
         self.name = 'uno-2p'
         self.game = Game()
-        self.game.init_game()
-        # Useful parameters
-        self.action_recorder = []
-        self.base_agent_id, self.smart_agent_id = 0, 1
+        # Agent declaration
+        self.base_agent = base_agent
+        self.training_agent = training_agent
+        self.agents = [base_agent, training_agent]
+        # Statistics
+        self.action_recorder = []  # only record the action of training_agent
         self.states = [[4, 4, 15] for _ in range(2)]
         self.actions = [None for _ in range(2)]
+        # Initialization
+        _, self.cur_player = self.game.init_game()
+        self.cur_state = self.get_state(self.cur_player)
+        self.base_move()
+
+    def base_move(self):
+        while self.cur_player == 0:
+            base_action = self.base_agent.step(self.cur_state)
+            ic(base_action)
+            if not self.base_agent.use_raw:
+                base_action = self._decode_action(base_action)
+            _, self.cur_player = self.game.step(base_action)
+            self.cur_state = self.get_state(self.cur_player)
 
     def step(self, action):
-        pass
+
+        # Start accessing actions
+        assert self.cur_player == 1
+        # Perform one-step update
+        if not self.training_agent.use_raw:
+            action = self._decode_action(action)
+        # Record the action for human agent
+        self.action_recorder.append(("Training", action))
+        _, self.cur_player = self.game.step(action)
+        self.cur_state = self.get_state(self.cur_player)
+        if self.cur_player == 1:
+            return self.cur_state
+        else:
+            self.base_move()
+            return self.cur_state
 
     def get_state(self, id):
         return self._extract_state(self.game.get_state(id))
@@ -46,6 +79,8 @@ class UnoEnv2P():
 
     def _decode_action(self, action_id):
         legal_ids = self._get_legal_actions()
+        # ic(action_id)
+        assert action_id in legal_ids
         if action_id in legal_ids:
             return ACTION_LIST[action_id]
         return ACTION_LIST[np.random.choice(legal_ids)]
@@ -77,4 +112,4 @@ class UnoEnv2P():
         return state
 
 
-unoenv = UnoEnv2P()
+# unoenv = UnoEnv2P()

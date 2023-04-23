@@ -1,6 +1,5 @@
 from copy import deepcopy
 import numpy as np
-
 from uno.game.uno import Dealer
 from uno.game.uno import Player
 from uno.game.uno import Round

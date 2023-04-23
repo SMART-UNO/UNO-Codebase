@@ -31,20 +31,6 @@ class Env(object):
         self.allow_step_back = self.game.allow_step_back
         self.action_recorder = []
 
-        # Game specific configurations
-        # Currently only support blackjack、limit-holdem、no-limit-holdem
-        # TODO support game configurations for all the games
-        supported_envs = ['blackjack', 'leduc-holdem',
-                          'limit-holdem', 'no-limit-holdem']
-
-        # TODO: (Xiaoyang): these functions are deprecated. REMOVE later...
-        if self.name in supported_envs:
-            _game_config = self.default_game_config.copy()
-            for key in config:
-                if key in _game_config:
-                    _game_config[key] = config[key]
-            self.game.configure(_game_config)
-
         # Get the number of players/actions in this game
         self.num_players = self.game.get_num_players()
         self.num_actions = self.game.get_num_actions()
@@ -272,3 +258,6 @@ class Env(object):
         Note: Must be implemented in the child class.
         '''
         raise NotImplementedError
+
+    def simulate_env(self, player):
+        state, player_id = self.reset()

@@ -133,7 +133,7 @@ class UnoRound:
             legal_actions = wild_4_actions
         if not legal_actions:
             legal_actions = ['draw']
-        return legal_actions
+        return legal_actions, target
 
     def get_state(self, players, player_id):
         ''' Get player's state
@@ -147,7 +147,7 @@ class UnoRound:
         state['hand'] = cards2list(player.hand)
         state['target'] = self.target.str
         state['played_cards'] = cards2list(self.played_cards)
-        state['legal_actions'] = self.get_legal_actions(players, player_id)
+        state['legal_actions'], _ = self.get_legal_actions(players, player_id)
         state['num_cards'] = []
         for player in players:
             state['num_cards'].append(len(player.hand))

@@ -9,17 +9,23 @@ import sys
 sys.path.insert(0, 'UNO-Codabase')
 
 # All of imports here are CUSTOMIZED. We are not using RLCards anymore.
-from uno.envs.uno import UnoEnv
+from uno.envs.unoenv import UnoEnv
 from uno.agents.random_agent import RandomAgent
+from uno.agents.sarsa_agent import SARSAAgent
 from utils import parse_payoffs
     
 np.random.seed(2023)
 
 # INITIALIZE environments (already overwritten)
-env = UnoEnv(False)
+env = UnoEnv(True)
+env.set_agents([RandomAgent(num_actions=61),
+               SARSAAgent(num_actions=61)])
+# Test step by step
+# state = env.step(qw)
+
 # For testing, just two random agents
-env.set_agents([RandomAgent(num_actions=61), RandomAgent(num_actions=61)])
 trajectories, payoffs = env.run()
+ic(env.is_over())
 ic(len(trajectories))
 ic(payoffs)
 
@@ -77,4 +83,4 @@ def test_random_player(n=100):
 # P1 wins 4881 games (P1 win rate: 48.81%)
 # Draws 0 games (Draw rate: 0.0%)
 
-test_random_player(10000)
+# test_random_player(10000)

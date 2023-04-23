@@ -19,8 +19,9 @@ sarsa_agent = torch.load("checkpoint/SARSA/sarsa-agent-[50000].pt",
 n = 1000
 env = UnoEnv(False)
 sarsa_agent.Q.eval()
-# env.set_agents([RandomAgent(num_actions=61), sarsa_agent])
+# env.set_agents([sarsa_agent, RandomAgent(num_actions=61)])
 env.set_agents([RandomAgent(num_actions=61), sarsa_agent])
+# env.set_agents([RandomAgent(num_actions=61), RandomAgent(num_actions=61)])
 # Store statistics
 payoffs_lst, trajectories_lst = [], []
 
@@ -31,6 +32,12 @@ for idx in tqdm(range(n)):
     trajectories_lst.append(trajectories)
 # Print out statistics
 parse_payoffs(payoffs_lst, True)
+
+# Before Training
+# Total Number of Games: 1000
+# P0 wins 507 games (P0 win rate: 50.7%)
+# P1 wins 493 games (P1 win rate: 49.3%)
+# Draws 0 games (Draw rate: 0.0%)
 
 # SARSA test results: n = 50000 (short training)
 # Total Number of Games: 1000

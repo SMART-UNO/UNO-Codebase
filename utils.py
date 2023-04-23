@@ -3,7 +3,17 @@ import torch
 from collections import Counter
 from icecream import ic
 
+
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+#---------- GPU information  ----------#
+if torch.cuda.is_available():
+    print(f"-- Current Device: {torch.cuda.get_device_name(0)}")
+    print(
+        f"-- Device Total Memory: {torch.cuda.get_device_properties(0).total_memory / (1024**3):.2f} GB")
+    print("-- Let's use", torch.cuda.device_count(), "GPUs!")
+    print(f"Device Name: {DEVICE}")
+else:
+    print("-- Unfortunately, we are only using CPUs now.")
 
 
 def parse_payoffs(payoff_lst, verbose=False):
@@ -13,7 +23,7 @@ def parse_payoffs(payoff_lst, verbose=False):
     p0_stats, p1_stats = payoff_lst[:,
                                     :1].squeeze(), payoff_lst[:, 1:].squeeze()
     assert p0_stats.shape == p1_stats.shape
-    ic(p0_stats.shape)
+    # ic(p0_stats.shape)
     p0_stats, p1_stats = Counter(list(p0_stats)), Counter(list(p1_stats))
 
     p0_wins, p0_lose, p0_draw = [p0_stats[r] for r in [1, -1, 0]]

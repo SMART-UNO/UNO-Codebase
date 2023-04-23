@@ -14,20 +14,22 @@ from utils import parse_payoffs
 
 torch.manual_seed(2023)
 np.random.seed(2023)
-# Agent declaration
-base_agent = RandomAgent(61)
-sarsa_agent = SARSAAgent(61)
-# Environment declaration
-env = UnoEnv2P(base_agent, sarsa_agent)
 # Hyperparameter declaration
 num_episodes = 100000
+lr = 1e-4
+eps = 0.05
+discount_factor = 1
 T = 10000
+# Agent declaration
+base_agent = RandomAgent(61)
+sarsa_agent = SARSAAgent(num_actions=61, lr=lr, eps=eps, df=discount_factor)
+# Environment declaration
+env = UnoEnv2P(base_agent, sarsa_agent)
 
 sarsa_agent.Q.train()
 for episode in tqdm(range(num_episodes)):
     env.reset()
     t = 0
-    r = 0.0
     # Initialize S & A
     S = env.cur_state
     A = sarsa_agent.step(S)
@@ -43,7 +45,8 @@ for episode in tqdm(range(num_episodes)):
         if is_over:
             break
 
-torch.save(sarsa_agent, f"checkpoint/SARSA/sarsa-agent-[{num_episodes}].pt")
+torch.save(sarsa_agent,
+           f"checkpoint/SARSA/sarsa-agent-[{num_episodes}]-[{lr}]-[{eps}]-[{discount_factor}].pt")
 
 n = 1000
 env = UnoEnv(False)

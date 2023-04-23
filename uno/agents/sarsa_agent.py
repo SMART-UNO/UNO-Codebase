@@ -13,7 +13,7 @@ np.random.seed(2023)
 
 class SARSAAgent(object):
 
-    def __init__(self, num_actions, lr=1e-3, eps=0.05):
+    def __init__(self, num_actions, lr=1e-4, eps=0.05, df=0.95):
         self.use_raw = False
         self.num_actions = num_actions
         # Q-Value estimation network
@@ -26,7 +26,7 @@ class SARSAAgent(object):
         # self.criterion = nn.MSELoss() # useless
         # Hyperparameters
         self.eps = eps
-        self.df = 0.95
+        self.df = df
 
     @staticmethod
     def random_action(legal_actions):
@@ -49,7 +49,7 @@ class SARSAAgent(object):
             # ic(torch.argmax(val_lst).item())
             return legal_actions[torch.argmax(val_lst).item()]
 
-    def eval_step(self, state):
+    def eval_step(self, state, is_greedy=False):
         # Return optimal policy based on LEARNED policy
         legal_actions = list(state['legal_actions'].keys())
         # Obtain action values by approximation
@@ -58,6 +58,7 @@ class SARSAAgent(object):
         # Action
         rand_val = np.random.rand()
         assert rand_val >= 0 and rand_val <= 1
+        eps = self.eps if not is_greedy else 1
         if rand_val < self.eps:
             return self.random_action(legal_actions), None
         else:
@@ -68,14 +69,12 @@ class SARSAAgent(object):
         q_est = self.Q(S['obs'])[A]
         A_NEW = self.step(S_NEW)
         next_q = self.Q(S_NEW['obs'])[A_NEW]
-
         q_true = self.df * next_q + R if not is_over else R
         loss = (q_true - q_est)**2
         # ic(loss)
         self.opt.zero_grad()
         loss.backward()
         self.opt.step()
-
         return A_NEW
 
         # Simple Test Code

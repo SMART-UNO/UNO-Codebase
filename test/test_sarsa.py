@@ -11,6 +11,7 @@ from uno.agents.random_agent import RandomAgent
 from uno.agents.sarsa_agent import SARSAAgent
 from utils import parse_payoffs
 
+np.random.seed(2023)
 # Test sarsa agent
 sarsa_agent = torch.load("checkpoint/SARSA/sarsa-agent-[50000].pt",
                          map_location=torch.device('cpu'))

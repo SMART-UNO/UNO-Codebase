@@ -13,7 +13,7 @@ np.random.seed(2023)
 
 class SARSAAgent(object):
 
-    def __init__(self, num_actions, lr=1e-4, eps=0.05):
+    def __init__(self, num_actions, lr=1e-3, eps=0.05):
         self.use_raw = False
         self.num_actions = num_actions
         # Q-Value estimation network

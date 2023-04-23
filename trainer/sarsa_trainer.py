@@ -10,7 +10,7 @@ from uno.envs.uno2penv import UnoEnv2P
 from model.sarsa_backbone import SARSA_Q
 from uno.agents.random_agent import RandomAgent
 from uno.agents.sarsa_agent import SARSAAgent
-from utils import parse_payoffs
+from utils import parse_payoffs, DEVICE
 
 torch.manual_seed(2023)
 np.random.seed(2023)
@@ -25,6 +25,12 @@ base_agent = RandomAgent(61)
 sarsa_agent = SARSAAgent(num_actions=61, lr=lr, eps=eps, df=discount_factor)
 # Environment declaration
 env = UnoEnv2P(base_agent, sarsa_agent)
+# Load checkpoint if necessary
+checkpoint = "checkpoint/SARSA/sarsa-agent-[100000]-[0.0001]-[0.05]-[1].pt"
+if checkpoint is not None:
+    sarsa_agent = torch.load(checkpoint,
+                             map_location=DEVICE)
+    ic('Checkpoint Loaded!')
 
 sarsa_agent.Q.train()
 for episode in tqdm(range(num_episodes)):
@@ -46,7 +52,7 @@ for episode in tqdm(range(num_episodes)):
             break
 
 torch.save(sarsa_agent,
-           f"checkpoint/SARSA/sarsa-agent-[{num_episodes}]-[{lr}]-[{eps}]-[{discount_factor}].pt")
+           f"checkpoint/SARSA/sarsa-agent-[200000]-[{lr}]-[{eps}]-[{discount_factor}].pt")
 
 n = 1000
 env = UnoEnv(False)

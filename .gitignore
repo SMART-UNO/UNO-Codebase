@@ -1,6 +1,8 @@
 __pycache__
 .DS_Store
 
+
+test_uno_env.py
 # Xiaoyang personal
 test_rl_card.py
 xysong/

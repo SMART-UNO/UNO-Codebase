@@ -4,6 +4,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
 from icecream import ic
+from utils import DEVICE
 
 
 class SARSA_Q(nn.Module):
@@ -23,6 +24,6 @@ class SARSA_Q(nn.Module):
         if type(state) != torch.Tensor:
             state = torch.tensor(
                 state, dtype=torch.float32, requires_grad=True)
-        out = self.model(torch.flatten(state, 0, 2))
+        out = self.model(torch.flatten(state.to(DEVICE), 0, 2))
         return out
         # return torch.softmax(out, dim=-1) # We may not want to normalize here

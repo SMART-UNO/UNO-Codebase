@@ -6,6 +6,7 @@ from icecream import ic
 # External import
 from uno.envs.uno2penv import UnoEnv2P
 from model.sarsa_backbone import SARSA_Q
+from utils import DEVICE
 torch.manual_seed(2023)
 np.random.seed(2023)
 
@@ -16,7 +17,7 @@ class SARSAAgent(object):
         self.use_raw = False
         self.num_actions = num_actions
         # Q-Value estimation network
-        self.Q = SARSA_Q(512, 61)
+        self.Q = SARSA_Q(512, 61).to(DEVICE)
         # Optimizer
         self.opt = torch.optim.Adam(self.Q.parameters(), lr=lr)
         # Scheduler (unnecessary for now)

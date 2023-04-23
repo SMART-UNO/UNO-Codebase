@@ -1,6 +1,9 @@
 import numpy as np
+import torch
 from collections import Counter
 from icecream import ic
+
+DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 
 def parse_payoffs(payoff_lst, verbose=False):

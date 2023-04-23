@@ -2,25 +2,30 @@ import numpy as np
 import torch
 import torch.nn as nn
 from icecream import ic
+from tqdm import tqdm
 # External import
+from uno.envs.unoenv import UnoEnv
 from uno.envs.uno2penv import UnoEnv2P
 from model.sarsa_backbone import SARSA_Q
 from uno.agents.random_agent import RandomAgent
 from uno.agents.sarsa_agent import SARSAAgent
+from utils import parse_payoffs
 
 # Test sarsa agent
-sarsa = SARSAAgent(61)
-rand = RandomAgent(61)
-state = torch.zeros((4, 4, 15))
-# Test nn
-# ic(state.shape)
-out = sarsa.Q(state)
-# ic(out.shape)
-# ic(torch.sum(out))
-# Test UNO2PENV
-unoenv = UnoEnv2P(rand, sarsa)
-state = unoenv.get_state(1)
-# ic(state)
-action = sarsa.step(state)
-ic(action)
-unoenv.step(action)
+sarsa_agent = torch.load("checkpoint/SARSA/sarsa-agent-[25000].pt")
+
+n = 1000
+env = UnoEnv(False)
+sarsa_agent.Q.eval()
+# env.set_agents([RandomAgent(num_actions=61), sarsa_agent])
+env.set_agents([sarsa_agent, RandomAgent(num_actions=61)])
+# Store statistics
+payoffs_lst, trajectories_lst = [], []
+
+for idx in tqdm(range(n)):
+    env.reset()
+    trajectories, payoffs = env.run()
+    payoffs_lst.append(payoffs)
+    trajectories_lst.append(trajectories)
+# Print out statistics
+parse_payoffs(payoffs_lst, True)

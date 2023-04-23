@@ -20,7 +20,7 @@ sarsa_agent = SARSAAgent(61)
 # Environment declaration
 env = UnoEnv2P(base_agent, sarsa_agent)
 # Hyperparameter declaration
-num_episodes = 100000
+num_episodes = 50000
 T = 10000
 
 sarsa_agent.Q.train()
@@ -43,7 +43,7 @@ for episode in tqdm(range(num_episodes)):
         if is_over:
             break
 
-torch.save(sarsa_agent, "SARSA_AGENT.pt")
+torch.save(sarsa_agent, f"checkpoint/SARSA/sarsa-agent-[{num_episodes}].pt")
 
 n = 1000
 env = UnoEnv(False)

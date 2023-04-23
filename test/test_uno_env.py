@@ -5,11 +5,14 @@ from tqdm import tqdm
 import pickle
 import json
 
+import sys
+sys.path.insert(0, 'UNO-Codabase')
+
 # All of imports here are CUSTOMIZED. We are not using RLCards anymore.
 from uno.envs.uno import UnoEnv
 from uno.agents.random_agent import RandomAgent
 from utils import parse_payoffs
-
+    
 np.random.seed(2023)
 
 # INITIALIZE environments (already overwritten)
@@ -25,27 +28,27 @@ ic(payoffs)
 
 # Check returned trajectories
 # Just to get a sense of how "trajectories" are stored
-check_trajectory = False
+check_trajectory = True
 if check_trajectory:
     for idx, item in enumerate(trajectories[0]):
         ic(f"{idx} -- {type(item)}")
-        if type(item) == np.int64:
+        if type(item) == np.int64 or type(item) == np.int32:
             ic(item)
         else:
             ic(len(item['action_record']))
 
 
-check_action_recorder = False
+check_action_recorder = True
 if check_action_recorder:
     # Check action_recorder functionality
     ic(trajectories[0][0]['action_record'])
     ic(trajectories[0][28]['action_record'])
     assert trajectories[0][28]['action_record'] == trajectories[0][0]['action_record']
 
-check_transitions = False
+check_transitions = True
 if check_transitions:
     # Save trajectories to .json for testing purpose
-    with open("log/test.json", "w") as f:
+    with open("UNO-Codabase/log/test.json", "w") as f:
         trajectories[0][0]['obs'] = trajectories[0][0]['obs'].tolist()
         for item, val in trajectories[0][0].items():
             ic(f"{item} -- {type(val)}")

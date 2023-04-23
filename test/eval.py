@@ -13,7 +13,6 @@ from utils import parse_payoffs, get_average_payoffs, DEVICE, line
 
 
 def test_trained_agents(agent1, agent2, n):
-    n = 1000
     env = UnoEnv(False)
     # Change this later
     agent2.Q.eval()

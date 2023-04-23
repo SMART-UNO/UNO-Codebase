@@ -23,7 +23,7 @@ class SARSAAgent(object):
         # Scheduler (unnecessary for now)
         self.scheduler = torch.optim.lr_scheduler.StepLR(
             self.opt, 5, gamma=0.1)
-        self.criterion = nn.MSELoss()
+        # self.criterion = nn.MSELoss() # useless
         # Hyperparameters
         self.eps = eps
         self.df = 0.95

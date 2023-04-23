@@ -20,7 +20,7 @@ sarsa_agent = SARSAAgent(61)
 # Environment declaration
 env = UnoEnv2P(base_agent, sarsa_agent)
 # Hyperparameter declaration
-num_episodes = 50000
+num_episodes = 100000
 T = 10000
 
 sarsa_agent.Q.train()

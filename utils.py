@@ -16,6 +16,19 @@ else:
     print("-- Unfortunately, we are only using CPUs now.")
 
 
+def get_average_payoffs(payoff_lst, verbose=False):
+    payoff_lst = np.array(payoff_lst)
+    r0, r1 = np.mean(payoff_lst, axis=0)
+    if verbose:
+        print(line(60))
+        print("Average Rewards")
+        print(line(60))
+        print(f"Agent 0 Average Reward: {r0}")
+        print(f"Agent 1 Average Reward: {r1}")
+
+    return np.mean(payoff_lst, axis=0)
+
+
 def parse_payoffs(payoff_lst, verbose=False):
     # Assume that there are only two players
     # Can be extended to more players cases easily later
@@ -36,11 +49,16 @@ def parse_payoffs(payoff_lst, verbose=False):
     assert p0_wins + p1_wins + p0_draw == n
 
     if verbose:
+        print(line(60))
         print(f"Total Number of Games: {n}")
         print(
-            f"P0 wins {p0_wins} games (P0 win rate: {np.round(100 * p0_wins/n, 3)}%)")
+            f"Agent 0 wins {p0_wins} games (P0 win rate: {np.round(100 * p0_wins/n, 3)}%)")
         print(
-            f"P1 wins {p1_wins} games (P1 win rate: {np.round(100 * p1_wins/n, 3)}%)")
+            f"Agent 1 wins {p1_wins} games (P1 win rate: {np.round(100 * p1_wins/n, 3)}%)")
         print(
             f"Draws {p0_draw} games (Draw rate: {np.round(100 * p0_draw/n, 3)}%)")
     return p1_wins, p0_wins, p1_draw
+
+
+def line(n):
+    return "-"*n

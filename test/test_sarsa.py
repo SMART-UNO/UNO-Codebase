@@ -9,30 +9,16 @@ from uno.envs.uno2penv import UnoEnv2P
 from model.sarsa_backbone import SARSA_Q
 from uno.agents.random_agent import RandomAgent
 from uno.agents.sarsa_agent import SARSAAgent
-from utils import parse_payoffs
+from eval import *
 
 np.random.seed(2023)
 # Test sarsa agent
-sarsa_agent = torch.load("checkpoint/SARSA/sarsa-agent-[100000]-[0.0001]-[0.05]-[1].pt",
-                         map_location=torch.device('cpu'))
-
-
-n = 1000
-env = UnoEnv(False)
-sarsa_agent.Q.eval()
-# env.set_agents([sarsa_agent, RandomAgent(num_actions=61)])
-env.set_agents([RandomAgent(num_actions=61), sarsa_agent])
-# env.set_agents([RandomAgent(num_actions=61), RandomAgent(num_actions=61)])
-# Store statistics
-payoffs_lst, trajectories_lst = [], []
-
-for idx in tqdm(range(n)):
-    env.reset()
-    trajectories, payoffs = env.run()
-    payoffs_lst.append(payoffs)
-    trajectories_lst.append(trajectories)
-# Print out statistics
-parse_payoffs(payoffs_lst, True)
+agent1 = RandomAgent(61)
+# sarsa_agent = torch.load("checkpoint/SARSA/sarsa-agent-[100000]-[0.0001]-[0.05]-[1].pt",
+#                          map_location=torch.device('cpu'))
+sarsa_agent = torch.load(
+    "checkpoint/SARSA/sarsa-agent-[50000].pt", map_location=DEVICE)
+test_trained_agents(agent1, sarsa_agent, 1000)
 
 # Before Training
 # Total Number of Games: 1000

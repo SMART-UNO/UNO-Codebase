@@ -6,11 +6,13 @@ from icecream import ic
 # External import
 from uno.envs.uno2penv import UnoEnv2P
 from model.sarsa_backbone import SARSA_Q
+torch.manual_seed(2023)
+np.random.seed(2023)
 
 
 class SARSAAgent(object):
 
-    def __init__(self, num_actions, lr=1e-3, eps=0.05):
+    def __init__(self, num_actions, lr=1e-2, eps=0.05):
         self.use_raw = False
         self.num_actions = num_actions
         # Q-Value estimation network
@@ -20,6 +22,7 @@ class SARSAAgent(object):
         # Scheduler (unnecessary for now)
         self.scheduler = torch.optim.lr_scheduler.StepLR(
             self.opt, 5, gamma=0.1)
+        self.criterion = nn.MSELoss()
         # Hyperparameters
         self.eps = eps
         self.df = 1
@@ -65,16 +68,14 @@ class SARSAAgent(object):
         A_NEW = self.step(S_NEW)
         next_q = self.Q(S_NEW['obs'])[A_NEW]
 
-        q_true = self.df*next_q + R if not is_over else R
-
-        loss = (q_true - q_est)**2  # MSE
-
+        q_true = self.df * next_q + R if not is_over else R
+        loss = (q_true - q_est)**2
+        # ic(loss)
         self.opt.zero_grad()
         loss.backward()
         self.opt.step()
 
         return A_NEW
-
 
         # Simple Test Code
 if __name__ == '__main__':

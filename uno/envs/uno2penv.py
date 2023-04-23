@@ -1,4 +1,5 @@
 import numpy as np
+import torch
 from collections import OrderedDict
 from icecream import ic
 
@@ -12,6 +13,8 @@ from uno.game.uno.utils import cards2list
 
 BASE_ID = 0
 TRAIN_ID = 1
+torch.manual_seed(2023)
+np.random.seed(2023)
 
 
 class UnoEnv2P():

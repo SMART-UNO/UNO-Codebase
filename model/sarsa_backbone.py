@@ -21,7 +21,8 @@ class SARSA_Q(nn.Module):
         # ic(state.shape)
         assert state.shape == torch.Size((4, 4, 15))
         if type(state) != torch.Tensor:
-            state = torch.tensor(state, dtype=torch.float32)
+            state = torch.tensor(
+                state, dtype=torch.float32, requires_grad=True)
         out = self.model(torch.flatten(state, 0, 2))
         return out
         # return torch.softmax(out, dim=-1) # We may not want to normalize here

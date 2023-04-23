@@ -12,16 +12,18 @@ from uno.agents.random_agent import RandomAgent
 from uno.agents.sarsa_agent import SARSAAgent
 from utils import parse_payoffs
 
-
+torch.manual_seed(2023)
+np.random.seed(2023)
 # Agent declaration
 base_agent = RandomAgent(61)
 sarsa_agent = SARSAAgent(61)
 # Environment declaration
 env = UnoEnv2P(base_agent, sarsa_agent)
 # Hyperparameter declaration
-num_episodes = 1000
-T = 1000
+num_episodes = 100000
+T = 10000
 
+sarsa_agent.Q.train()
 for episode in tqdm(range(num_episodes)):
     env.reset()
     t = 0
@@ -33,6 +35,7 @@ for episode in tqdm(range(num_episodes)):
         t += 1
         S_NEW, is_over = env.step(A)
         R = env.get_payoffs()[1]
+        # ic(R)
         A_NEW = sarsa_agent.update(S, A, S_NEW, R, is_over)
         # Update
         A = A_NEW
@@ -40,9 +43,11 @@ for episode in tqdm(range(num_episodes)):
         if is_over:
             break
 
+torch.save(sarsa_agent, "SARSA_AGENT.pt")
 
-n = 100
+n = 1000
 env = UnoEnv(False)
+sarsa_agent.Q.eval()
 env.set_agents([RandomAgent(num_actions=61), sarsa_agent])
 # Store statistics
 payoffs_lst, trajectories_lst = [], []

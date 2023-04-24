@@ -14,10 +14,11 @@ from eval import *
 np.random.seed(2023)
 # Test sarsa agent
 agent1 = RandomAgent(61)
-sarsa_agent = torch.load("checkpoint/SARSA/sarsa-agent-[100000]-[0.0001]-[0.05]-[1].pt",
-                         map_location=torch.device('cpu'))
-# sarsa_agent = torch.load(
-#     "checkpoint/SARSA/sarsa-agent-[50000].pt", map_location=DEVICE)
+# sarsa_agent = torch.load("checkpoint/SARSA/sarsa-agent-[100000]-[0.0001]-[0.05]-[1].pt",
+#  map_location=torch.device('cpu'))
+sarsa_agent = torch.load(
+    "checkpoint/SARSA/sarsa-agent-[10000]-[0.0001]-[0.05]-[0.95].pt", map_location=DEVICE)
+sarsa_agent.eps = 0.01
 test_trained_agents(agent1, sarsa_agent, 10000)
 
 # Before Training

@@ -51,6 +51,9 @@ class UnoEnv2P():
                 base_action = self._decode_action(base_action)
             _, self.cur_player = self.game.step(base_action)
             self.cur_state = self.get_state(self.cur_player)
+        # update current state
+        assert self.cur_player == 1 or self.game.is_over()
+        self.cur_state = self.get_state(1)
 
     def step(self, action):
 

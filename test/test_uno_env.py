@@ -25,8 +25,6 @@ trajectories, payoffs = env.run()
 ic(env.is_over())
 ic(len(trajectories))
 ic(payoffs)
-
-
 ######  TESTING  ######
 
 # Check returned trajectories

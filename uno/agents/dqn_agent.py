@@ -81,7 +81,6 @@ class DQNAgent:
     def update_target_network(self):
         self.target_network.load_state_dict(self.q_network.state_dict())
 
-
 class QNetwork(nn.Module):
     def __init__(self, num_actions=61, state_size=240, device=torch.device("cuda:0" if torch.cuda.is_available() else "cpu"), layers=2):
         super(QNetwork, self).__init__()

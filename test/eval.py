@@ -15,7 +15,7 @@ from utils import parse_payoffs, get_average_payoffs, DEVICE, line
 def test_trained_agents(agent1, agent2, n):
     env = UnoEnv(False)
     # Change this later
-    agent2.Q.eval()
+    # agent2.Q.eval()
     env.set_agents([agent1, agent2])
     # Store statistics
     payoffs_lst, trajectories_lst = [], []

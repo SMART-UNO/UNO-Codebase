@@ -18,7 +18,6 @@ env = UnoEnv(True)
 env.set_agents([RandomAgent(num_actions=61),
                SARSAAgent(num_actions=61)])
 # Test step by step
-# state = env.step(qw)
 
 # For testing, just two random agents
 trajectories, payoffs = env.run()

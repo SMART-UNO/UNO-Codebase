@@ -18,7 +18,7 @@ np.random.seed(2023)
 num_episodes = 50000
 lr = 1e-3
 eps = 0.05
-discount_factor = 0.90
+discount_factor = 0.95
 T = 10000
 # Agent declaration
 base_agent = RandomAgent(61)

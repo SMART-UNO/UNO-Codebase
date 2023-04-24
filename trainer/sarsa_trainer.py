@@ -15,10 +15,10 @@ from utils import parse_payoffs, DEVICE
 torch.manual_seed(2023)
 np.random.seed(2023)
 # Hyperparameter declaration
-num_episodes = 200000
-lr = 1e-4
-eps = 0.01
-discount_factor = 1
+num_episodes = 50000
+lr = 1e-3
+eps = 0.05
+discount_factor = 0.90
 T = 10000
 # Agent declaration
 base_agent = RandomAgent(61)

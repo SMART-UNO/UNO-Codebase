@@ -26,9 +26,9 @@ sarsa_agent = SARSAAgent(num_actions=61, lr=lr, eps=eps, df=discount_factor)
 # Environment declaration
 env = UnoEnv2P(base_agent, sarsa_agent)
 # Load checkpoint if necessary
-# checkpoint = "checkpoint/SARSA/sarsa-agent-[100000]-[0.0001]-[0.05]-[1].pt"
+checkpoint = "checkpoint/SARSA/sarsa-agent-[50000]-[0.0001]-[0.05]-[0.95].pt"
 # checkpoint = "checkpoint/SARSA/sarsa-agent-[50000].pt"
-checkpoint = None
+# checkpoint = None
 if checkpoint is not None:
     sarsa_agent = torch.load(checkpoint,
                              map_location=DEVICE)

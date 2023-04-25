@@ -57,16 +57,16 @@ class MCAgent(object):
         assert rand_val >= 0 and rand_val <= 1
         # eps = self.eps if not is_greedy else 1
         if rand_val < self.eps:
-            return self.random_action(legal_actions), None
+            return self.random_action(legal_actions)
         else:
             # ic(torch.argmax(val_lst).item())
-            return legal_actions[torch.argmax(val_lst).item()], None
+            return legal_actions[torch.argmax(val_lst).item()]
 
     def train(self, n=1000):
         '''
         Function to train a Monte Carlo Agent.
 
-        The algorithm is as follws:
+        The algorithm is as follows:
             Loop through episodes
                 Generate episodes
                 Loop through each step

@@ -26,6 +26,7 @@ def test_trained_agents(agent1, agent2, n):
         payoffs_lst.append(payoffs)
         trajectories_lst.append(trajectories)
     # Compute average rewards
-    get_average_payoffs(payoffs_lst, True)
+    r0, r1 = get_average_payoffs(payoffs_lst, True)
     # Print out statistics
     parse_payoffs(payoffs_lst, True)
+    return r0, r1

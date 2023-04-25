@@ -13,19 +13,22 @@ from uno.agents.sarsa_agent import SARSAAgent
 from utils import parse_payoffs, DEVICE
 from tests.eval import test_trained_agents
 
-torch.manual_seed(2023)
-np.random.seed(2023)
+torch.manual_seed(4529)
+np.random.seed(4529)
+
 # Hyperparameter declaration
-num_episodes = 50000
-lr = 1e-3
+num_episodes = 200000
+lr = 1e-4
 eps = 0.05
 discount_factor = 0.95
-T = 10000
+T = 10000  # Just some large number
+
 # Agent declaration
 base_agent = RandomAgent(61)
 sarsa_agent = SARSAAgent(num_actions=61, lr=lr, eps=eps, df=discount_factor)
 # Environment declaration
 env = UnoEnv2P(base_agent, sarsa_agent)
+
 # Load checkpoint if necessary
 # checkpoint = "checkpoint/SARSA/sarsa-agent-[50000]-[0.0001]-[0.05]-[0.95].pt"
 # checkpoint = "checkpoint/SARSA/sarsa-agent-[50000].pt"
@@ -36,8 +39,10 @@ if checkpoint is not None:
     ic('Checkpoint Loaded!')
     sarsa_agent.Q = sarsa_agent.Q.to(DEVICE)
 
-sarsa_agent.Q.train()
+eval_every_n = 1000
+# Training Loop
 for episode in tqdm(range(num_episodes)):
+    sarsa_agent.Q.train()
     env.reset()
     t = 0
     # Initialize S & A
@@ -54,21 +59,14 @@ for episode in tqdm(range(num_episodes)):
         S = S_NEW
         if is_over:
             break
+    if (episode + 1) % eval_every_n == 0:
+        test_trained_agents(sarsa_agent, base_agent, 100)
+        test_trained_agents(base_agent, sarsa_agent, 100)
 
+# Save results
 torch.save(sarsa_agent,
            f"checkpoint/SARSA/sarsa-agent-[{num_episodes}]-[{lr}]-[{eps}]-[{discount_factor}].pt")
 
-n = 1000
-env = UnoEnv(False)
-sarsa_agent.Q.eval()
-env.set_agents([RandomAgent(num_actions=61), sarsa_agent])
-# Store statistics
-payoffs_lst, trajectories_lst = [], []
-
-for idx in tqdm(range(n)):
-    env.reset()
-    trajectories, payoffs = env.run()
-    payoffs_lst.append(payoffs)
-    trajectories_lst.append(trajectories)
-# Print out statistics
-parse_payoffs(payoffs_lst, True)
+# Final Eval
+test_trained_agents(sarsa_agent, base_agent, 10000)
+test_trained_agents(base_agent, sarsa_agent, 10000)

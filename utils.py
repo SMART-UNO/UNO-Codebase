@@ -26,7 +26,7 @@ def get_average_payoffs(payoff_lst, verbose=False):
         print(f"Agent 0 Average Reward: {r0}")
         print(f"Agent 1 Average Reward: {r1}")
 
-    return np.mean(payoff_lst, axis=0)
+    return r0, r1
 
 
 def parse_payoffs(payoff_lst, verbose=False):

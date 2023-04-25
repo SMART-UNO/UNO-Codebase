@@ -11,6 +11,7 @@ from model.sarsa_backbone import SARSA_Q
 from uno.agents.random_agent import RandomAgent
 from uno.agents.sarsa_agent import SARSAAgent
 from utils import parse_payoffs, DEVICE
+from tests.eval import test_trained_agents
 
 torch.manual_seed(2023)
 np.random.seed(2023)

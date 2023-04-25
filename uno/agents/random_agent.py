@@ -9,13 +9,16 @@ class RandomAgent(object):
 
     def __init__(self, num_actions, mode=None):
         # assert mode in ['random', 'color-first', 'value-first']
-        # self.mode = mode
+        self.mode = mode
         self.name = "RANDOM Agent"
         self.use_raw = False
         self.num_actions = num_actions
 
     def step(self, state):
         legal_actions = list(state['legal_actions'].keys())
+        ic(state['raw_obs']['target'])
+        ic(state['raw_obs']['legal_actions'])
+        # ic(state['legal_actions'].keys())
         # TODO: (Xiaoyang) add other random agents later
         # ic(state['legal_actions'])
         # ic(legal_actions)
@@ -42,3 +45,7 @@ class RandomAgent(object):
             state['legal_actions'].keys())[i]] for i in range(len(state['legal_actions']))}
 
         return self.step(state), info
+
+
+# Test
+# random_agent =  RandomAgent(61)

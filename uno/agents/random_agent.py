@@ -10,6 +10,7 @@ class RandomAgent(object):
     def __init__(self, num_actions, mode=None):
         # assert mode in ['random', 'color-first', 'value-first']
         # self.mode = mode
+        self.name = "RANDOM Agent"
         self.use_raw = False
         self.num_actions = num_actions
 

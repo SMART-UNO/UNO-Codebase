@@ -11,24 +11,26 @@ from model.sarsa_backbone import SARSA_Q
 from uno.agents.random_agent import RandomAgent
 from uno.agents.sarsa_agent import SARSAAgent
 from utils import parse_payoffs, DEVICE
-from tests.eval import test_trained_agents
+from tests.eval import test_trained_agents, plot_avg_rewards
 
 torch.manual_seed(4529)
 np.random.seed(4529)
 
-# Hyperparameter declaration
-num_episodes = 200000
+# -------------------- Hyperparameter Declaration -------------------- #
+num_episodes = 100000
 lr = 1e-4
 eps = 0.05
 discount_factor = 0.95
 T = 10000  # Just some large number
 
-# Agent declaration
+# ------------------------ Agent Declaration ------------------------ #
 base_agent = RandomAgent(61)
 sarsa_agent = SARSAAgent(num_actions=61, lr=lr, eps=eps, df=discount_factor)
-# Environment declaration
+
+# --------------------- Environment Declaration --------------------- #
 env = UnoEnv2P(base_agent, sarsa_agent)
 
+# ----------------------- Checkpoint Loading ----------------------- #
 # Load checkpoint if necessary
 # checkpoint = "checkpoint/SARSA/sarsa-agent-[50000]-[0.0001]-[0.05]-[0.95].pt"
 # checkpoint = "checkpoint/SARSA/sarsa-agent-[50000].pt"
@@ -39,8 +41,11 @@ if checkpoint is not None:
     ic('Checkpoint Loaded!')
     sarsa_agent.Q = sarsa_agent.Q.to(DEVICE)
 
-eval_every_n = 1000
-# Training Loop
+# --------------------- Statistics --------------------- #
+eval_every_n = 2000
+avg_payoff_sarsa_first, avg_payoff_sarsa_second = [], []
+
+# --------------------- Training Loop --------------------- #
 for episode in tqdm(range(num_episodes)):
     sarsa_agent.Q.train()
     env.reset()
@@ -48,6 +53,11 @@ for episode in tqdm(range(num_episodes)):
     # Initialize S & A
     S = env.cur_state
     A = sarsa_agent.step(S)
+    # Handle base case where the game is over directly
+    if env.is_over():
+        continue
+
+    # --------------------- Training within one episode --------------------- #
     while t < T:
         t += 1
         S_NEW, is_over = env.step(A)
@@ -59,14 +69,27 @@ for episode in tqdm(range(num_episodes)):
         S = S_NEW
         if is_over:
             break
-    if (episode + 1) % eval_every_n == 0:
-        test_trained_agents(sarsa_agent, base_agent, 100)
-        test_trained_agents(base_agent, sarsa_agent, 100)
 
-# Save results
+    # --------------------- Evaluation every n episodes --------------------- #
+    if (episode + 1) % eval_every_n == 0:
+        r_sarsa_first, _ = test_trained_agents(sarsa_agent, base_agent, 1000, False)
+        _, r_sarsa_second = test_trained_agents(base_agent, sarsa_agent, 1000, False)
+        avg_payoff_sarsa_first.append((episode, r_sarsa_first))
+        avg_payoff_sarsa_second.append((episode, r_sarsa_second))
+
+# --------------------- Save Training Checkpoint --------------------- #
 torch.save(sarsa_agent,
            f"checkpoint/SARSA/sarsa-agent-[{num_episodes}]-[{lr}]-[{eps}]-[{discount_factor}].pt")
 
-# Final Eval
-test_trained_agents(sarsa_agent, base_agent, 10000)
-test_trained_agents(base_agent, sarsa_agent, 10000)
+# --------------------- Final Evaluation --------------------- #
+test_trained_agents(sarsa_agent, base_agent, 10000, True)
+test_trained_agents(base_agent, sarsa_agent, 10000, True)
+
+# --------------------- Plot Results --------------------- #
+plt_path = f"log/SARSA/sarsa-agent-[{num_episodes}]-[{lr}]-[{eps}]-[{discount_factor}]"
+plot_avg_rewards(avg_payoff_sarsa_first,
+                 "Average Rewards (SARSA Agent Plays First)",
+                 plt_path + "-[first].png")
+plot_avg_rewards(avg_payoff_sarsa_second,
+                 "Average Rewards (SARSA Agent Plays Second)",
+                 plt_path + "-[second].png")

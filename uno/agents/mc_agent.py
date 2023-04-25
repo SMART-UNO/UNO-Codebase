@@ -4,6 +4,7 @@ import torch.nn as nn
 from icecream import ic
 # External import
 from model.mc_backbone import MC_Q
+from uno.envs.unoenv import UnoEnv
 from utils import DEVICE
 torch.manual_seed(2023)
 np.random.seed(2023)
@@ -12,6 +13,7 @@ np.random.seed(2023)
 class MCAgent(object):
 
     def __init__(self, num_actions, lr=1e-4, eps=0.05, df=0.95):
+        self.env = UnoEnv(False)
         self.name = "MC Agent"
         self.use_raw = False
         self.num_actions = num_actions
@@ -61,13 +63,34 @@ class MCAgent(object):
             return legal_actions[torch.argmax(val_lst).item()], None
 
     def train(self, n=1000):
-        pass
-        # Loop through episodes
-        # Generate episodes
-        # Loop through each step
-        # Compute Gt
-        # self.optimizer.zero_grad()
-        # loss = (Gt - self.Q[state][action])**2
-        # in theory: w = w - lr * (-2 * (Gt - self.Q[state][action]) * dQ/dw)
-        # loss.backward()
-        # self.optimizer.step()
+        '''
+        Function to train a Monte Carlo Agent.
+
+        The algorithm is as follws:
+            Loop through episodes
+                Generate episodes
+                Loop through each step
+                    Compute Gt
+                    self.optimizer.zero_grad()
+                    loss = (Gt - self.Q[state][action])**2
+                        in theory: w = w - lr * (-2 * (Gt - self.Q[state][action]) * dQ/dw)
+                    loss.backward()
+                    self.optimizer.step()
+        '''
+        for _ in range(n):
+            states, actions, payoff = self.env.run_monte_carlo()
+
+            G_t = 0
+            T = len(actions)  # total number of steps taken
+            for t in range(T):
+                # only training the first player
+                G_t += pow(self.df, T - t - 1) * payoff[0]
+                self.opt.zero_grad()
+                loss = (G_t - self.Q[states[0][t]][actions[0][t]])**2
+                loss.backward()
+                self.opt.step()
+
+
+# monte_carlo = MCAgent(61)
+# state = torch.zeros((4, 4, 15))
+# out = monte_carlo.Q(state)

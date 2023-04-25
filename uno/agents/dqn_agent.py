@@ -32,6 +32,7 @@ class DQNAgent:
         self.optimizer = torch.optim.Adam(self.q_network.parameters(), lr=learning_rate)
         self.loss_fn = nn.MSELoss()
 
+
     def step(self, state):
         # Reshape the state to the expected input size
         reshaped_state = state['obs'].reshape(-1)
@@ -80,6 +81,8 @@ class DQNAgent:
 
     def update_target_network(self):
         self.target_network.load_state_dict(self.q_network.state_dict())
+
+
 
 class QNetwork(nn.Module):
     def __init__(self, num_actions=61, state_size=240, device=torch.device("cuda:0" if torch.cuda.is_available() else "cpu"), layers=2):

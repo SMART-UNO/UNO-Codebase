@@ -32,7 +32,6 @@ class DQNAgent:
         self.optimizer = torch.optim.Adam(self.q_network.parameters(), lr=learning_rate)
         self.loss_fn = nn.MSELoss()
 
-
     def step(self, state):
         # Reshape the state to the expected input size
         reshaped_state = state['obs'].reshape(-1)

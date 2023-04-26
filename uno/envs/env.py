@@ -164,7 +164,7 @@ class Env(object):
 
         return trajectories, payoffs
 
-    def run_monte_carlo(self):
+    def run_monte_carlo(self, order = 0):
         '''
         Run a complete game, for training RL agent.
         Args:
@@ -181,11 +181,11 @@ class Env(object):
         state, player_id = self.reset()
 
         # Loop to play the game
-        if player_id == 0:
+        if player_id == order:
             states.append(state)
         while not self.is_over():
             # Agent plays
-            if player_id == 0:  # this is the trained agent
+            if player_id == order:  # this is the trained agent
                 action = self.agents[player_id].eval_step(state)
             else:  # playing against a random agent
                 action = self.agents[player_id].step(state)
@@ -195,16 +195,16 @@ class Env(object):
                 action, self.agents[player_id].use_raw)
 
             # Save action
-            if player_id == 0:
-                actions[player_id].append(action)
+            if player_id == order:
+                actions.append(action)
 
             # Set the state and player
             state = next_state
             player_id = next_player_id
 
             # Save state.
-            if not self.game.is_over() and player_id == 0:
-                states[player_id].append(state)
+            if not self.game.is_over() and player_id == order:
+                states.append(state)
 
         # Add a final state to all the players
         # for player_id in range(self.num_players):

@@ -12,8 +12,8 @@ np.random.seed(2023)
 
 class MCAgent(object):
 
-    def __init__(self, num_actions, lr=1e-4, eps=0.05, df=0.95):
-        self.env = UnoEnv(False)
+    def __init__(self, num_actions, env, lr=1e-4, eps=0.05, df=0.95):
+        self.env = env
         self.name = "MC Agent"
         self.use_raw = False
         self.num_actions = num_actions

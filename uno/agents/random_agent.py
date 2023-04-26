@@ -16,8 +16,8 @@ class RandomAgent(object):
 
     def step(self, state):
         legal_actions = list(state['legal_actions'].keys())
-        ic(state['raw_obs']['target'])
-        ic(state['raw_obs']['legal_actions'])
+        # ic(state['raw_obs']['target'])
+        # ic(state['raw_obs']['legal_actions'])
         # ic(state['legal_actions'].keys())
         # TODO: (Xiaoyang) add other random agents later
         # ic(state['legal_actions'])

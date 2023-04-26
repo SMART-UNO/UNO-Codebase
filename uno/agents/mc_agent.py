@@ -2,6 +2,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 from icecream import ic
+from tqdm import tqdm
 # External import
 from model.mc_backbone import MC_Q
 from uno.envs.unoenv import UnoEnv
@@ -77,7 +78,7 @@ class MCAgent(object):
                     loss.backward()
                     self.optimizer.step()
         '''
-        for _ in range(n):
+        for _ in tqdm(range(n)):
             states, actions, payoff = self.env.run_monte_carlo()
 
             G_t = 0
@@ -86,7 +87,11 @@ class MCAgent(object):
                 # only training the first player
                 G_t += pow(self.df, T - t - 1) * payoff[0]
                 self.opt.zero_grad()
-                loss = (G_t - self.Q[states[0][t]][actions[0][t]])**2
+                # ic(states[0].keys())
+                # ic(actions[0])
+                # Probably should be the following?
+                loss = (G_t - self.Q(states[t]['obs'])[actions[t]])**2
+                # loss = (G_t - self.Q[states[0][t]][actions[0][t]])**2
                 loss.backward()
                 self.opt.step()
 

@@ -42,6 +42,7 @@ eval_every_n = 2000
 avg_payoff_mc_first, avg_payoff_mc_second = [], []
 
 # --------------------- Training Code --------------------- #
+# line 46 - 48 is problematic
 for episode in tqdm(range(n)):
     env.reset()
     mc_agent.train(n)

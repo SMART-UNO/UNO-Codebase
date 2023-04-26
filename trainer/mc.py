@@ -48,17 +48,17 @@ for episode in tqdm(range(n)):
     mc_agent.train(n)
 
     # --------------------- Evaluation every n episodes --------------------- #
-    if (episode + 1) % eval_every_n == 0:
-        r_mc_first, _ = test_trained_agents(
-            mc_agent, random_agent, 1000, False)
-        _, r_mc_second = test_trained_agents(
-            random_agent, mc_agent, 1000, False)
-        avg_payoff_mc_first.append((episode, r_mc_first))
-        avg_payoff_mc_second.append((episode, r_mc_second))
+    # if (episode + 1) % eval_every_n == 0:
+    #     r_mc_first, _ = test_trained_agents(
+    #         mc_agent, random_agent, 1000, False)
+    #     _, r_mc_second = test_trained_agents(
+    #         random_agent, mc_agent, 1000, False)
+    #     avg_payoff_mc_first.append((episode, r_mc_first))
+    #     avg_payoff_mc_second.append((episode, r_mc_second))
 
 # --------------------- Final Evaluation --------------------- #
-reward_mc_first = test_trained_agents(mc_agent, random_agent, 10000, True)
-reward_mc_second =test_trained_agents(random_agent, mc_agent, 10000, True)
+reward_mc_first = test_trained_agents(mc_agent, random_agent, 100, True)
+reward_mc_second =test_trained_agents(random_agent, mc_agent, 100, True)
 
 print(reward_mc_first, reward_mc_second)
 

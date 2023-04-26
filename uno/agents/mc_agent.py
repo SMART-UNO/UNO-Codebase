@@ -63,7 +63,7 @@ class MCAgent(object):
             # ic(torch.argmax(val_lst).item())
             return legal_actions[torch.argmax(val_lst).item()]
 
-    def train(self, n=1000):
+    def train(self, n=100):
         '''
         Function to train a Monte Carlo Agent.
 
@@ -89,9 +89,7 @@ class MCAgent(object):
                 self.opt.zero_grad()
                 # ic(states[0].keys())
                 # ic(actions[0])
-                # Probably should be the following?
                 loss = (G_t - self.Q(states[t]['obs'])[actions[t]])**2
-                # loss = (G_t - self.Q[states[0][t]][actions[0][t]])**2
                 loss.backward()
                 self.opt.step()
 

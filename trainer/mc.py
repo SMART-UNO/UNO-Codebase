@@ -21,7 +21,7 @@ torch.manual_seed(4529)
 np.random.seed(4529)
 
 # -------------------- Hyperparameter Declaration -------------------- #
-n = 100000
+n = 10000
 lr = 1e-4
 eps = 0.05
 discount_factor = 0.95
@@ -43,9 +43,7 @@ avg_payoff_mc_first, avg_payoff_mc_second = [], []
 
 # --------------------- Training Code --------------------- #
 # line 46 - 48 is problematic
-for episode in tqdm(range(n)):
-    env.reset()
-    mc_agent.train(n)
+mc_agent.train(n)
 
     # --------------------- Evaluation every n episodes --------------------- #
     # if (episode + 1) % eval_every_n == 0:
@@ -57,10 +55,10 @@ for episode in tqdm(range(n)):
     #     avg_payoff_mc_second.append((episode, r_mc_second))
 
 # --------------------- Final Evaluation --------------------- #
-reward_mc_first = test_trained_agents(mc_agent, random_agent, 100, True)
-reward_mc_second =test_trained_agents(random_agent, mc_agent, 100, True)
+test_trained_agents(mc_agent, random_agent, 100, True)
+test_trained_agents(random_agent, mc_agent, 100, True)
 
-print(reward_mc_first, reward_mc_second)
+# print(reward_mc_first, reward_mc_second)
 
 
 # --------------------- Plot Results --------------------- #

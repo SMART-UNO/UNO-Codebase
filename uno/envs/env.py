@@ -186,9 +186,9 @@ class Env(object):
         while not self.is_over():
             # Agent plays
             if player_id == order:  # this is the trained agent
-                action = self.agents[player_id].eval_step(state)
+                action, _ = self.agents[player_id].eval_step(state)
             else:  # playing against a random agent
-                action = self.agents[player_id].step(state)
+                action  = self.agents[player_id].step(state)
 
             # Environment steps
             next_state, next_player_id = self.step(

@@ -28,6 +28,9 @@ class SARSAAgent(object):
         # Hyperparameters
         self.eps = eps
         self.df = df
+        # eval statistics
+        self.eval_first = []
+        self.eval_second = []
 
     @staticmethod
     def random_action(legal_actions):

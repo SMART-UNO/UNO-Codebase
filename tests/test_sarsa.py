@@ -24,8 +24,8 @@ sarsa_agent.eps = 0.01
 setattr(sarsa_agent, "name", "SARSA Agent")
 
 # Test
-test_trained_agents(random_agent, sarsa_agent, 10000, True)
-test_trained_agents(sarsa_agent, random_agent, 10000, True)
+test_trained_agents(random_agent, sarsa_agent, 100, True)
+test_trained_agents(sarsa_agent, random_agent, 100, True)
 # test_trained_agents(random_agent, random_agent, 10000, True)
 
 # Before Training

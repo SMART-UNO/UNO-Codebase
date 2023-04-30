@@ -35,10 +35,13 @@ def test_trained_agents(agent1, agent2, n, verbose=False):
 
 def plot_avg_rewards(avg_payoff, title, filename):
     loi = np.array(avg_payoff)
+    # ic(loi.shape)
     x, y = loi[:, 0], loi[:, 1]
-    plt.plot(x, y, color='#00b384')
+    # plt.plot(x, y, color='#00b384')
+    plt.plot(x, y, color='navy')
+    plt.axhline(y=0.0, color='purple', linestyle='dashed')
     plt.xlabel("Iterations (Episodes)")
     plt.ylabel("Average Rewards")
     plt.title(title)
-    plt.savefig(filename)
+    plt.savefig(filename, dpi=400)
     plt.close()

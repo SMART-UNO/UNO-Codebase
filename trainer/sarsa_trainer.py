@@ -13,16 +13,19 @@ from uno.agents.sarsa_agent import SARSAAgent
 from utils import parse_payoffs, DEVICE
 from tests.eval import test_trained_agents, plot_avg_rewards
 
-torch.manual_seed(4529)
-np.random.seed(4529)
-
+# torch.manual_seed(4529)
+# np.random.seed(4529)
+torch.manual_seed(2023)
+np.random.seed(2023)
 # -------------------- Hyperparameter Declaration -------------------- #
 num_episodes = 50000
 lr = 1e-4
+
 # Epsilons
-eps = 0.95
+eps = 0.05
 update_eps_every_n = 1000
-decay_rate = 0.95
+decay_rate = 1
+
 # Discount Factor
 discount_factor = 0.95
 T = 10000  # Just some large number
@@ -81,9 +84,9 @@ for episode in tqdm(range(num_episodes)):
     # --------------------- Evaluation every n episodes --------------------- #
     if (episode + 1) % eval_every_n == 0:
         r_sarsa_first, _ = test_trained_agents(
-            sarsa_agent, base_agent, 1000, True)
+            sarsa_agent, base_agent, 1000, False)
         _, r_sarsa_second = test_trained_agents(
-            base_agent, sarsa_agent, 1000, True)
+            base_agent, sarsa_agent, 1000, False)
         avg_payoff_sarsa_first.append((episode, r_sarsa_first))
         avg_payoff_sarsa_second.append((episode, r_sarsa_second))
         # Store back to agents

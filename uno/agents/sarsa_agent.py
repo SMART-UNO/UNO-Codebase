@@ -86,7 +86,7 @@ class SARSAAgent(object):
             print(f">> Epsilon remains at level of {self.eps}.")
             return
         og = self.eps
-        self.eps *= self.eps * decay_factor
+        self.eps *= decay_factor
         print(f">> Epsilon decays from {og} to {self.eps}.")
 
         # Simple Test Code

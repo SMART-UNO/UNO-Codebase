@@ -12,6 +12,20 @@ from uno.agents.sarsa_agent import SARSAAgent
 from uno.agents.reinforce_agent import ReinforceAgent
 from eval import *
 
+
+CANDIDATES = ["Random Agent", "SARSA Agent",
+              "MC Agent", "REINFORCE Agent", "DQN Agent"]
+
+CHECKPOINTS = {
+    "Random Agent": RandomAgent(61),
+    "SARSA Agent": torch.load(
+        "checkpoint/SARSA/sarsa-agent-[50000]-[0.0001]-[0.05]-[0.95].pt", map_location=DEVICE),
+    "REINFORCE Agent": torch.load(
+        "checkpoint/REINFORCE/reinforce-agent-[50000]-[0.0001]-[0.95]-stanford.pt"),
+    "DQN Agent": None,
+    "MC Agent": None
+}
+
 np.random.seed(2023)
 # np.random.seed(4529)
 # Test sarsa agent

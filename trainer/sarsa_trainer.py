@@ -17,9 +17,13 @@ torch.manual_seed(4529)
 np.random.seed(4529)
 
 # -------------------- Hyperparameter Declaration -------------------- #
-num_episodes = 100000
+num_episodes = 50000
 lr = 1e-4
-eps = 0.05
+# Epsilons
+eps = 0.95
+update_eps_every_n = 1000
+decay_rate = 0.95
+# Discount Factor
 discount_factor = 0.95
 T = 10000  # Just some large number
 
@@ -42,7 +46,7 @@ if checkpoint is not None:
     sarsa_agent.Q = sarsa_agent.Q.to(DEVICE)
 
 # --------------------- Statistics --------------------- #
-eval_every_n = 2000
+eval_every_n = 1000
 avg_payoff_sarsa_first, avg_payoff_sarsa_second = [], []
 
 # --------------------- Training Loop --------------------- #
@@ -70,12 +74,21 @@ for episode in tqdm(range(num_episodes)):
         if is_over:
             break
 
+    # --------------------- Update Epsilon --------------------- #
+    if (episode + 1) % update_eps_every_n == 0:
+        sarsa_agent.update_eps(decay_rate)
+
     # --------------------- Evaluation every n episodes --------------------- #
     if (episode + 1) % eval_every_n == 0:
-        r_sarsa_first, _ = test_trained_agents(sarsa_agent, base_agent, 1000, False)
-        _, r_sarsa_second = test_trained_agents(base_agent, sarsa_agent, 1000, False)
+        r_sarsa_first, _ = test_trained_agents(
+            sarsa_agent, base_agent, 1000, True)
+        _, r_sarsa_second = test_trained_agents(
+            base_agent, sarsa_agent, 1000, True)
         avg_payoff_sarsa_first.append((episode, r_sarsa_first))
         avg_payoff_sarsa_second.append((episode, r_sarsa_second))
+        # Store back to agents
+        sarsa_agent.eval_first.append((episode, r_sarsa_first))
+        sarsa_agent.eval_first.append((episode, r_sarsa_second))
 
 # --------------------- Save Training Checkpoint --------------------- #
 torch.save(sarsa_agent,

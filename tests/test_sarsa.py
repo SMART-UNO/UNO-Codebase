@@ -11,7 +11,7 @@ from uno.agents.random_agent import RandomAgent
 from uno.agents.sarsa_agent import SARSAAgent
 from eval import *
 
-# np.random.seed(2023)
+np.random.seed(2023)
 # np.random.seed(4529)
 # Test sarsa agent
 random_agent = RandomAgent(61)
@@ -24,8 +24,8 @@ sarsa_agent.eps = 0.01
 setattr(sarsa_agent, "name", "SARSA Agent")
 
 # Test
-test_trained_agents(random_agent, sarsa_agent, 100, True)
-test_trained_agents(sarsa_agent, random_agent, 100, True)
+test_trained_agents(random_agent, sarsa_agent, 10000, True)
+test_trained_agents(sarsa_agent, random_agent, 10000, True)
 # test_trained_agents(random_agent, random_agent, 10000, True)
 
 # Before Training

@@ -81,6 +81,14 @@ class SARSAAgent(object):
         self.opt.step()
         return A_NEW
 
+    def update_eps(self, decay_factor):
+        if self.eps < 0.01:
+            print(f">> Epsilon remains at level of {self.eps}.")
+            return
+        og = self.eps
+        self.eps *= self.eps * decay_factor
+        print(f">> Epsilon decays from {og} to {self.eps}.")
+
         # Simple Test Code
 if __name__ == '__main__':
     # Test sarsa agent

@@ -2,6 +2,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 from icecream import ic
+import pandas as pd
 from tqdm import tqdm
 # External import
 from uno.envs.unoenv import UnoEnv
@@ -25,6 +26,11 @@ CHECKPOINTS = {
     "DQN Agent": None,
     "MC Agent": None
 }
+
+
+def contests(n=10000, seed=2023):
+    stats = pd.DataFrame(columns=CANDIDATES, index=CANDIDATES)
+    for 
 
 np.random.seed(2023)
 # np.random.seed(4529)

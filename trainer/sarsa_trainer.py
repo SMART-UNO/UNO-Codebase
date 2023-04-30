@@ -22,7 +22,7 @@ lr = 1e-4
 # Epsilons
 eps = 0.95
 update_eps_every_n = 1000
-decay_rate = 0.9
+decay_rate = 0.95
 # Discount Factor
 discount_factor = 0.95
 T = 10000  # Just some large number

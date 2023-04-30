@@ -17,10 +17,10 @@ torch.manual_seed(4529)
 np.random.seed(4529)
 
 # -------------------- Hyperparameter Declaration -------------------- #
-num_episodes = 100000
+num_episodes = 50000
 lr = 1e-4
-eps = 0.025
-discount_factor = 0.99
+eps = 0.05
+discount_factor = 0.95
 T = 10000  # Just some large number
 
 # ------------------------ Agent Declaration ------------------------ #
@@ -84,7 +84,7 @@ for episode in tqdm(range(num_episodes)):
 
 # --------------------- Save Training Checkpoint --------------------- #
 torch.save(sarsa_agent,
-           f"checkpoint/SARSA/sarsa-agent-[{num_episodes}]-[{lr}]-[{eps}]-[{discount_factor}].pt")
+           f"checkpoint/SARSA/sarsa-agent-[new]-[{num_episodes}]-[{lr}]-[{eps}]-[{discount_factor}].pt")
 
 # --------------------- Final Evaluation --------------------- #
 test_trained_agents(sarsa_agent, base_agent, 10000, True)

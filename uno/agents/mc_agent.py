@@ -63,12 +63,11 @@ class MCAgent(object):
             # ic(torch.argmax(val_lst).item())
             return legal_actions[torch.argmax(val_lst).item()], None
 
-    def train(self, n=100):
+    def train(self):
         '''
-        Function to train a Monte Carlo Agent.
+        Function to train a Monte Carlo Agent for one episode.
 
         The algorithm is as follows:
-            Loop through episodes
                 Generate episodes
                 Loop through each step
                     Compute Gt
@@ -78,20 +77,28 @@ class MCAgent(object):
                     loss.backward()
                     self.optimizer.step()
         '''
-        for _ in tqdm(range(n)):
-            states, actions, payoff = self.env.run_monte_carlo()
+        
+        states, actions, payoff = self.env.run_monte_carlo()
 
-            G_t = 0
-            T = len(actions)  # total number of steps taken
-            for t in range(T):
-                # only training the first player
-                G_t += pow(self.df, T - t - 1) * payoff[0]
-                self.opt.zero_grad()
-                # ic(states[0].keys())
-                # ic(actions[0])
-                loss = (G_t - self.Q(states[t]['obs'])[actions[t]])**2
-                loss.backward()
-                self.opt.step()
+        G_t = 0
+        T = len(actions)  # total number of steps taken
+        for t in range(T):
+            # only training the first player
+            G_t += pow(self.df, T - t - 1) * payoff[0]
+            self.opt.zero_grad()
+            # ic(states[0].keys())
+            # ic(actions[0])
+            loss = (G_t - self.Q(states[t]['obs'])[actions[t]])**2
+            loss.backward()
+            self.opt.step()
+
+    def update_eps(self, decay_factor):
+        if self.eps < 0.01:
+            print(f">> Epsilon remains at level of {self.eps}.")
+            return
+        og = self.eps
+        self.eps *= decay_factor
+        print(f">> Epsilon decays from {og} to {self.eps}.")
 
 
 # monte_carlo = MCAgent(61)

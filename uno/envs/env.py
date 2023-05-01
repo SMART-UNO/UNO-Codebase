@@ -167,12 +167,9 @@ class Env(object):
     def run_monte_carlo(self, order = 0):
         '''
         Run a complete game, for training RL agent.
-        Args:
-            is_training (boolean): True if for training purpose.
         Returns:
-            (tuple) Tuple containing:
-                (list): A list of trajectories generated from the environment.
-                (list): A list payoffs. Each entry corresponds to one player.
+            (list), (list), (list)
+            One list for states, one list for actions, and one list for payoffs
         Note: The trajectories are 3-dimension list. The first dimension is for different players.
               The second dimension is for different transitions. The third dimension is for the contents of each transiton
         '''

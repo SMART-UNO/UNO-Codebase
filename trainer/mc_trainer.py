@@ -23,7 +23,7 @@ n = 200000
 lr = 1e-4
 eps = 0.95
 update_eps_every_n = 2000
-decay_rate = 0.95
+decay_rate = 0.96
 discount_factor = 0.95
 
 # --------------------- Environment Declaration --------------------- #

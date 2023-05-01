@@ -99,17 +99,16 @@ class DQNAgent:
         self.target_network.load_state_dict(self.q_network.state_dict())
 
     def eval_step(self, state):
-        state_obs = state['obs']
-        state = torch.from_numpy(
-            state_obs).float().unsqueeze(0).to(self.device)
+
+        reshaped_state = state['obs'].reshape(-1)
+        reshaped_state = torch.from_numpy(
+            reshaped_state).float().unsqueeze(0).to(self.device)
+
+        legal_actions = list(state['legal_actions'].keys())
 
         self.q_network.eval()
         with torch.no_grad():
-            action_values = self.q_network(state)
+            action_values = self.q_network(reshaped_state)[0][legal_actions]
         self.q_network.train()
-        # ic(action_values)
-        # ic(action_values.cpu().data.numpy())
-        # ic(np.argmax(action_values.cpu().data.numpy()))
-        # ic(type(np.argmax(action_values.cpu().data.numpy())))
 
-        return np.argmax(action_values.cpu().data.numpy()), None
+        return legal_actions[torch.argmax(action_values).item()], None

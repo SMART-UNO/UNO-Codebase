@@ -45,6 +45,8 @@ def contests(n=10000, seed=2023):
             setattr(agent1_ckpt, "name", agent1)
             setattr(agent2_ckpt, "name", agent2)
             # Test
+            # print(agent1)
+            # print(agent2)
             r, _ = test_trained_agents(
                 agent1_ckpt, agent2_ckpt, n, False)
             # ic(r)

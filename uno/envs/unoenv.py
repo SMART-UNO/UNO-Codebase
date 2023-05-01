@@ -43,8 +43,13 @@ class UnoEnv(Env):
 
     def _decode_action(self, action_id):
         legal_ids = self._get_legal_actions()
+        # ic(legal_ids)
         if action_id in legal_ids:
             return ACTION_LIST[action_id]
+        # ic(legal_ids)
+        legal_ids = list(legal_ids)
+        # ic(list(legal_ids))
+        # legal_ids = [x[0] for x in list(legal_ids)]
         return ACTION_LIST[np.random.choice(legal_ids)]
 
     def _get_legal_actions(self):

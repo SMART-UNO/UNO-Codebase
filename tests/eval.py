@@ -21,7 +21,7 @@ def test_trained_agents(agent1, agent2, n, verbose=False):
     # Store statistics
     payoffs_lst, trajectories_lst = [], []
 
-    for idx in tqdm(range(n), disable=True):
+    for idx in tqdm(range(n), disable=False):
         env.reset()
         trajectories, payoffs = env.run()
         payoffs_lst.append(payoffs)

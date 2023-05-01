@@ -92,6 +92,14 @@ class MCAgent(object):
             loss.backward()
             self.opt.step()
 
+    def update_eps(self, decay_factor):
+        if self.eps < 0.01:
+            print(f">> Epsilon remains at level of {self.eps}.")
+            return
+        og = self.eps
+        self.eps *= decay_factor
+        print(f">> Epsilon decays from {og} to {self.eps}.")
+
 
 # monte_carlo = MCAgent(61)
 # state = torch.zeros((4, 4, 15))

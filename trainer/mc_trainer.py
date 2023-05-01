@@ -19,9 +19,11 @@ torch.manual_seed(4529)
 np.random.seed(4529)
 
 # -------------------- Hyperparameter Declaration -------------------- #
-n = 20
+n = 200000
 lr = 1e-4
-eps = 0.05
+eps = 0.95
+update_eps_every_n = 2000
+decay_rate = 0.95
 discount_factor = 0.95
 
 # --------------------- Environment Declaration --------------------- #
@@ -37,23 +39,27 @@ random_agent = RandomAgent(61)
 env.set_agents([mc_agent, random_agent])
 
 # --------------------- Statistics --------------------- #
-eval_every_n = 5
+eval_every_n = 1000
 # avg_payoff_mc_first, avg_payoff_mc_second = [], []
 
 # --------------------- Training Code --------------------- #
 
 for episode in tqdm(range(n)):
-  mc_agent.train()
+    mc_agent.train()
+    if (episode + 1) % update_eps_every_n == 0:
+        mc_agent.update_eps(decay_rate)
 
-  if (episode + 1) % eval_every_n == 0:
-    r_mc_first, _ = test_trained_agents(mc_agent, random_agent, 10, False)
-    _, r_mc_second = test_trained_agents(random_agent, mc_agent, 10, False)
-    avg_payoff_mc_first.append((episode, r_mc_first))
-    avg_payoff_mc_second.append((episode, r_mc_second))
+    if (episode + 1) % eval_every_n == 0:
+        r_mc_first, _ = test_trained_agents(
+            mc_agent, random_agent, 1000, False)
+        _, r_mc_second = test_trained_agents(
+            random_agent, mc_agent, 1000, False)
+        avg_payoff_mc_first.append((episode, r_mc_first))
+        avg_payoff_mc_second.append((episode, r_mc_second))
 
 # --------------------- Final Evaluation --------------------- #
-test_trained_agents(mc_agent, random_agent, 10, True)
-test_trained_agents(random_agent, mc_agent, 10, True)
+test_trained_agents(mc_agent, random_agent, 10000, True)
+test_trained_agents(random_agent, mc_agent, 10000, True)
 
 # print(reward_mc_first, reward_mc_second)
 

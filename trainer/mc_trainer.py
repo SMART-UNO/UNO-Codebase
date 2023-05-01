@@ -46,8 +46,8 @@ for episode in tqdm(range(n)):
   mc_agent.train()
 
   if (episode + 1) % eval_every_n == 0:
-    r_mc_first, _ = test_trained_agents( mc_agent, random_agent, 10, False)
-    _, r_mc_second = test_trained_agents( random_agent, mc_agent, 10, False)
+    r_mc_first, _ = test_trained_agents(mc_agent, random_agent, 10, False)
+    _, r_mc_second = test_trained_agents(random_agent, mc_agent, 10, False)
     avg_payoff_mc_first.append((episode, r_mc_first))
     avg_payoff_mc_second.append((episode, r_mc_second))
 

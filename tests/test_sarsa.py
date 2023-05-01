@@ -17,8 +17,14 @@ np.random.seed(2023)
 random_agent = RandomAgent(61)
 # sarsa_agent = torch.load("checkpoint/SARSA/sarsa-agent-[100000]-[0.0001]-[0.05]-[1].pt",
 #  map_location=torch.device('cpu'))
+
+# new best
 sarsa_agent = torch.load(
-    "checkpoint/SARSA/best_agent.pt", map_location=DEVICE)
+    "checkpoint/SARSA/sarsa-agent-new-[250000]-[0.0001]-[0.95]-[0.95].pt", map_location=DEVICE)
+# sarsa_agent = torch.load(
+#     "checkpoint/SARSA/best_agent.pt", map_location=DEVICE)
+
+
 sarsa_agent.eps = 0.01
 # For testing purpose only (remove this line later)
 setattr(sarsa_agent, "name", "SARSA Agent")

@@ -11,7 +11,7 @@ from model.sarsa_backbone import SARSA_Q
 from uno.agents.random_agent import RandomAgent
 from uno.agents.sarsa_agent import SARSAAgent
 from uno.agents.reinforce_agent import ReinforceAgent
-from eval import *
+from tests.eval import *
 
 
 CANDIDATES = ["Random Agent", "SARSA Agent",
@@ -21,11 +21,11 @@ CANDIDATES = ["Random Agent", "SARSA Agent",
 CHECKPOINTS = {
     "Random Agent": RandomAgent(61),
     "SARSA Agent": torch.load(
-        "checkpoint/SARSA/sarsa-agent-[50000]-[0.0001]-[0.05]-[0.95].pt", map_location=DEVICE),
+        "checkpoint/SARSA/best_agent.pt", map_location=DEVICE),
     "REINFORCE Agent": torch.load(
-        "checkpoint/REINFORCE/reinforce-agent-[50000]-[0.0001]-[0.95]-stanford.pt"),
+        "checkpoint/REINFORCE/reinforce-agent-[75000]-[0.0001]-[0.95]-stanford.pt"),
     "DQN Agent": torch.load(
-        "checkpoint/SARSA/sarsa-agent-[50000]-[0.0001]-[0.05]-[0.95].pt", map_location=DEVICE),
+        "checkpoint/DQN/dqn-agent-[new]-[80000]-[no decay_0.5]-[0.95].pt", map_location=DEVICE),
     "MC Agent": torch.load(
         "checkpoint/SARSA/sarsa-agent-[50000]-[0.0001]-[0.05]-[0.95].pt", map_location=DEVICE)
 }

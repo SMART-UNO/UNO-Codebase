@@ -27,7 +27,7 @@ CHECKPOINTS = {
     "DQN Agent": torch.load(
         "checkpoint/DQN/dqn-agent-[new]-[80000]-[no decay_0.5]-[0.95].pt", map_location=DEVICE),
     "MC Agent": torch.load(
-        "checkpoint/SARSA/sarsa-agent-[50000]-[0.0001]-[0.05]-[0.95].pt", map_location=DEVICE)
+        "checkpoint/MC/mc-agent-[200000]-[0.0001]-[0.05]-[0.95].pt", map_location=DEVICE)
 }
 
 

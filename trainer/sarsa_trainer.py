@@ -18,13 +18,13 @@ from tests.eval import test_trained_agents, plot_avg_rewards
 torch.manual_seed(2023)
 np.random.seed(2023)
 # -------------------- Hyperparameter Declaration -------------------- #
-num_episodes = 200000
+num_episodes = 250000
 lr = 1e-4
 
 # Epsilons
 eps = 0.95
 update_eps_every_n = 2000
-decay_rate = 0.95
+decay_rate = 0.97
 
 # Discount Factor
 discount_factor = 0.95
@@ -95,7 +95,7 @@ for episode in tqdm(range(num_episodes)):
 
 # --------------------- Save Training Checkpoint --------------------- #
 torch.save(sarsa_agent,
-           f"checkpoint/SARSA/sarsa-agent-new-[{num_episodes}]-[{lr}]-[{eps}]-[{discount_factor}].pt")
+           f"checkpoint/SARSA/sarsa-agent-large-[{num_episodes}]-[{lr}]-[{eps}]-[{discount_factor}].pt")
 
 # --------------------- Final Evaluation --------------------- #
 test_trained_agents(sarsa_agent, base_agent, 10000, True)

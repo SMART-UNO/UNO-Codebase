@@ -15,6 +15,8 @@ class SARSA_Q(nn.Module):
         self.model = nn.Sequential(
             nn.Linear(4 * 4 * 15, hidden_dim),
             nn.ReLU(),
+            nn.Linear(512, 512),
+            nn.ReLU(),
             nn.Linear(hidden_dim, num_actions)
         )
 
